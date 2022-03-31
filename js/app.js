@@ -2104,12 +2104,14 @@ function updateGameState(event) {
     document.getElementById('flag').appendChild(elem);
   }
 
-  const distance = Math.round(haversine(event.latlng, game.previousFlag.latlng));
-  game.score += distance;
-  game.rounds++;
-  document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
-  document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
-  document.getElementById('score').innerText = `score: ${game.score}`;
+  if (event) {
+    const distance = Math.round(haversine(event.latlng, game.previousFlag.latlng));
+    game.score += distance;
+    game.rounds++;
+    document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
+    document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
+    document.getElementById('score').innerText = `score: ${game.score}`;
+  }
 }
 
 ////////////////////
@@ -2119,4 +2121,4 @@ map.on('click', updateGameState);
 
 // let's get started!
 game.currentFlag = popRandomFlag();
-setFlag(game.currentFlag);
+updateGameState();

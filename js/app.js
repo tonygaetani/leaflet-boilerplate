@@ -19,6 +19,7 @@ const OpenStreetMap = L.tileLayer(
 const game = {
   currentFlag: undefined,
   previousFlag: undefined,
+  currentLine: undefined,
   rounds: 0,
   score: 0,
   flags: [
@@ -2040,6 +2041,11 @@ function shuffle(array) {
   return array;
 }
 
+function round(input) {
+  // round to 2 decimal places
+  return Math.round(input * 100) / 100;
+}
+
 function toRad(input) {
   return (input * Math.PI) / 180;
 }
@@ -2105,8 +2111,12 @@ function updateGameState(event) {
   }
 
   if (event) {
-    const distance = Math.round(haversine(event.latlng, game.previousFlag.latlng));
-    game.score += distance;
+    const distance = round(haversine(event.latlng, game.previousFlag.latlng));
+    if (game.currentLine) {
+      game.currentLine.remove(map);
+    }
+    game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {color: 'red'}).addTo(map);
+    game.score = round(game.score + distance);
     game.rounds++;
     document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
     document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;

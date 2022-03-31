@@ -12,23 +12,23 @@ const OpenStreetMap = L.tileLayer('http://a.basemaps.cartocdn.com/light_nolabels
   attribution: '&copy; <a href="https://raw.githubusercontent.com/CartoDB/basemap-styles/master/LICENSE.md">Carto CDN</a>'
 }).addTo(map);
 // game variables
-const flags = [
-  {
-    latlng: { lat: 59.43, lng: 24.74 },
-    flag: 'images/a01829903b582d494a12522243c2830c37b8c35966076925ea57f4f1f6fee570.png',
-    name: 'Tallinn, Estonia',
-  },
-  {
-    latlng: { lat: 19.75, lng: 96.1 },
-    flag: 'images/67397dcee912bf7c59b88a547182bb2f602aab6186e6998b43ef7106fac64d92.png',
-    name: 'Naypyidaw, Myanmar',
-  },
-];
 const game = {
-  currentFlag: getRandomFlag(),
+  currentFlag: undefined,
   rounds: 0,
   score: 0,
-}
+  flags: [
+    {
+      latlng: { lat: 59.43, lng: 24.74 },
+      flag: 'images/a01829903b582d494a12522243c2830c37b8c35966076925ea57f4f1f6fee570.png',
+      name: 'Tallinn, Estonia',
+    },
+    {
+      latlng: { lat: 19.75, lng: 96.1 },
+      flag: 'images/67397dcee912bf7c59b88a547182bb2f602aab6186e6998b43ef7106fac64d92.png',
+      name: 'Naypyidaw, Myanmar',
+    },
+  ]
+};
 
 ///////////////////////////////////
 // global functions for the game //
@@ -46,17 +46,51 @@ function setFlag(input) {
   document.getElementById('flag').appendChild(elem);
 }
 
-function getRandomFlag() {
-  return flags[Math.floor(Math.random() * flags.length)];
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+function popRandomFlag() {
+  shuffle(game.flags);
+  const flag = game.flags.pop();
+  if (!flag) {
+    endGame();
+  }
+  return flag;
+}
+
+function endGame() {
+  const summary = `
+rounds: ${game.rounds}
+score: ${game.score}
+ `;
+  if (alert(summary)) {
+  } else {
+    window.location.reload();
+  }
 }
 
 function setRandomFlag() {
-  currentFlag = getRandomFlag();
-  setFlag(currentFlag);
+  game.currentFlag = popRandomFlag();
+  setFlag(game.currentFlag);
 }
 
 function updateGameState(event) {
-  const distance = Math.round(haversine(event.latlng, currentFlag.latlng));
+  const distance = Math.round(haversine(event.latlng, game.currentFlag.latlng));
   game.score += distance;
   game.rounds++;
   document.getElementById('guess').innerText = `You were ${distance} km away`;

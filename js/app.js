@@ -66,27 +66,24 @@ function shuffle(array) {
 
 function popRandomFlag() {
   shuffle(game.flags);
-  const flag = game.flags.pop();
-  if (!flag) {
-    endGame();
-  }
-  return flag;
+  return game.flags.pop();
 }
 
 function endGame() {
-  const summary = `
+  // Do this on the next event loop tick
+  setTimeout(() => {
+    const summary = `
+G A M E O V E R
 rounds: ${game.rounds}
 score: ${game.score}
+good job
  `;
-  if (alert(summary)) {
-  } else {
-    window.location.reload();
-  }
-}
+    if (alert(summary)) {
+    } else {
+      window.location.reload();
+    }
 
-function setRandomFlag() {
-  game.currentFlag = popRandomFlag();
-  setFlag(game.currentFlag);
+  }, 0);
 }
 
 function updateGameState(event) {
@@ -122,7 +119,12 @@ function onMapClick(event) {
   updateGameState(event);
 
   // move on to the next flag
-  setRandomFlag();
+  const nextFlag = popRandomFlag();
+  if (!nextFlag) {
+    endGame();
+  } else {
+    setFlag(nextFlag);
+  }
 }
 
 ////////////////////
@@ -131,4 +133,5 @@ function onMapClick(event) {
 map.on('click', onMapClick);
 
 // let's get started!
-setRandomFlag();
+game.currentFlag = popRandomFlag();
+setFlag(game.currentFlag);

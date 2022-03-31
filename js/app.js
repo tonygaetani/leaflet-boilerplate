@@ -76,7 +76,8 @@ function endGame() {
 G A M E O V E R
 rounds: ${game.rounds}
 score: ${game.score}
-good job
+
+good job!
  `;
     if (alert(summary)) {
     } else {

@@ -13,3 +13,11 @@ body {
   width: auto;
   height: 100%;
 }
+
+#navbar {
+  margin: auto;
+}
+
+#guess,#rounds, #score {
+  color: white;
+}

@@ -1798,14 +1798,14 @@ const game = {
       },
       iso: 'SM',
     },
-    {
-      name: 'Al Quds, West Bank',
-      latlng: {
-        lat: 31.7764,
-        lng: 35.2269,
-      },
-      iso: 'XW',
-    },
+    // {
+    //   name: 'Al Quds, West Bank',
+    //   latlng: {
+    //     lat: 31.7764,
+    //     lng: 35.2269,
+    //   },
+    //   iso: 'XW',
+    // },
     {
       name: 'Capitol Hill, Northern Mariana Islands',
       latlng: {

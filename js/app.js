@@ -20,7 +20,7 @@ const game = {
   currentFlag: undefined,
   previousFlag: undefined,
   currentLine: undefined,
-  currentMarker: undefined,
+  currentMarkers: [],
   rounds: 0,
   score: 0,
   flags: [
@@ -2124,19 +2124,29 @@ function updateGameState(event) {
       weight: 0.5,
       opacity: 50,
     }).addTo(map);
-    if (game.currentMarker) {
-      game.currentMarker.remove(map);
+    for (const marker of game.currentMarkers) {
+      marker.remove(map);
     }
-    game.currentMarker = L.marker(
-      [game.previousFlag.latlng.lat, game.previousFlag.latlng.lng],
-      {
+    game.currentMarkers = [];
+    // guess marker
+    game.currentMarkers.push(
+      L.marker([event.latlng.lat, event.latlng.lng], {
         icon: new L.DivIcon({
           className: 'previous-guess-icon',
-          html: `<span class="previous-guess-span">${game.previousFlag.name}</span>`,
+          html: `<span class="previous-guess-span">Your Guess</span>`,
+        }),
+      }).addTo(map)
+    );
+    // answer marker
+    game.currentMarkers.push(
+      L.marker([game.previousFlag.latlng.lat, game.previousFlag.latlng.lng], {
+        icon: new L.DivIcon({
+          className: 'previous-answer-icon',
+          html: `<span class="previous-answer-span">${game.previousFlag.name}</span>`,
         }),
         title: game.previousFlag.name,
-      }
-    ).addTo(map);
+      }).addTo(map)
+    );
     game.score = round(game.score + distance);
     game.rounds++;
     document.getElementById(

@@ -127,7 +127,7 @@ function updateGameState(event) {
       game.currentLine.remove(map);
     }
     game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {
-      color: '#2a52be', // cerulean
+      color: '#007BA7', // cerulean
       weight: 0.5,
       opacity: 50,
     }).addTo(map);

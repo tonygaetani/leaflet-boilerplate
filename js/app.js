@@ -4,7 +4,7 @@
 // initialize our map
 const map = L.map('map', {
   center: [41, -69], // center map to the waters off beautiful Nauset
-  zoom: 6, // set the zoom level
+  zoom: 4, // set the zoom level
 });
 // add a baselayer to the map
 const OpenStreetMap = L.tileLayer(
@@ -2121,7 +2121,8 @@ function updateGameState(event) {
     }
     game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {
       color: '#2a52be', // cerulean
-      weight: 0.3,
+      weight: 0.5,
+      opacity: 50,
     }).addTo(map);
     if (game.currentMarker) {
       game.currentMarker.remove(map);

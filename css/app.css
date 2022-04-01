@@ -28,10 +28,13 @@ body,
 }
 
 .previous-guess-icon {
-  height: 50px;
-  width: 50px;
+  height: 100px;
+  width: 100px;
   background-color: #2a52be;
+  border-color: #000000;
   border-radius: 50%;
-  opacity: 25%;
+  opacity: 50%;
   display: inline-block;
+  font-size: larger;
+  font-weight: bolder;
 }

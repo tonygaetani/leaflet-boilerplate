@@ -154,7 +154,8 @@ function attemptNextFlag() {
 }
 
 function updateGameState(event) {
-  if (event) {
+  // do not handle events when game is paused
+  if (!game.pause && event) {
     // pause the game until the "next" button is pressed
     game.pause = true;
     document.getElementById('next-button').disabled = false;

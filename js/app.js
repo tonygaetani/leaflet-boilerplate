@@ -1727,14 +1727,14 @@ const game = {
       },
       iso: 'MT',
     },
-    {
-      name: 'Gaza, Gaza Strip',
-      latlng: {
-        lat: 31.5069,
-        lng: 34.456,
-      },
-      iso: 'XG',
-    },
+    // {
+    //   name: 'Gaza, Gaza Strip',
+    //   latlng: {
+    //     lat: 31.5069,
+    //     lng: 34.456,
+    //   },
+    //   iso: 'XG',
+    // },
     {
       name: 'Grand Turk, Turks And Caicos Islands',
       latlng: {

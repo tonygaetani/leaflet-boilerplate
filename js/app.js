@@ -4,7 +4,8 @@
 // initialize our map
 const map = L.map('map', {
   center: [41, -69], // center map to the waters off beautiful Nauset
-  zoom: 4, // set the zoom level
+  zoom: 4,
+  worldCopyJump: true,
 });
 // add a baselayer to the map
 const OpenStreetMap = L.tileLayer('http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {

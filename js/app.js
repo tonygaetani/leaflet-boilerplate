@@ -7,14 +7,11 @@ const map = L.map('map', {
   zoom: 4, // set the zoom level
 });
 // add a baselayer to the map
-const OpenStreetMap = L.tileLayer(
-  'http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-  {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://raw.githubusercontent.com/CartoDB/basemap-styles/master/LICENSE.md">Carto CDN</a>',
-  }
-).addTo(map);
+const OpenStreetMap = L.tileLayer('http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution:
+    '&copy; <a href="https://raw.githubusercontent.com/CartoDB/basemap-styles/master/LICENSE.md">Carto CDN</a>',
+}).addTo(map);
 // game variables
 const game = {
   currentFlag: undefined,
@@ -40,10 +37,7 @@ function shuffle(array) {
     currentIndex--;
 
     // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
 
   return array;
@@ -66,10 +60,7 @@ function haversine(lhs, rhs) {
   const dLng = toRad(x2);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(rhs.lat)) *
-      Math.cos(toRad(lhs.lat)) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2);
+    Math.cos(toRad(rhs.lat)) * Math.cos(toRad(lhs.lat)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const result = R * c;
   // result /= 1.60934; // miles
@@ -111,10 +102,7 @@ function updateGameState(event) {
       elem = document.createElement('img');
     }
     elem.setAttribute('id', 'flag-img');
-    elem.setAttribute(
-      'src',
-      `https://flagcdn.com/128x96/${game.currentFlag.iso.toLowerCase()}.png`
-    );
+    elem.setAttribute('src', `https://flagcdn.com/128x96/${game.currentFlag.iso.toLowerCase()}.png`);
     elem.setAttribute('width', '128');
     elem.setAttribute('height', '96');
     elem.setAttribute('alt', 'Flag to guess');
@@ -156,9 +144,7 @@ function updateGameState(event) {
     );
     game.score = round(game.score + distance);
     game.rounds++;
-    document.getElementById(
-      'guess'
-    ).innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
+    document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
     document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
     document.getElementById('score').innerText = `score: ${game.score}`;
   }
@@ -169,6 +155,17 @@ function updateGameState(event) {
 ////////////////////
 map.on('click', updateGameState);
 
+// start the timer
+let seconds_left = 2 * 60; // 2 minutes
+const gameTimerInterval = setInterval(function () {
+  seconds_left -= 1;
+  document.getElementById('game-timer').innerHTML = `time left: ${seconds_left} seconds`;
+
+  if (seconds_left <= 0) {
+    clearInterval(gameTimerInterval);
+    endGame();
+  }
+}, 1000);
+
 // let's get started!
-game.currentFlag = popRandomFlag();
 updateGameState();

@@ -16,9 +16,7 @@ body,
   margin: auto;
 }
 
-#guess,
-#rounds,
-#score {
+.display-value {
   color: white;
 }
 

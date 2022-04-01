@@ -2,13 +2,13 @@
 // sketchy globals go here //
 /////////////////////////////
 // initialize our map
-const map = L.map("map", {
-  center: [41, -69], // center map to the waters off beautiful naussett
-  zoom: 3, // set the zoom level
+const map = L.map('map', {
+  center: [41, -69], // center map to the waters off beautiful Nauset
+  zoom: 4, // set the zoom level
 });
 // add a baselayer to the map
 const OpenStreetMap = L.tileLayer(
-  "http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
+  'http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
   {
     maxZoom: 19,
     attribution:
@@ -20,257 +20,258 @@ const game = {
   currentFlag: undefined,
   previousFlag: undefined,
   currentLine: undefined,
+  currentMarkers: [],
   currentContinent: "All",
   rounds: 0,
   score: 0,
   allFlags: [
     {
-      name: "Tokyo, Japan",
+      name: 'Tokyo, Japan',
       latlng: {
         lat: 35.6839,
         lng: 139.7744,
       },
-      iso: "JP",
+      iso: 'JP',
     },
     {
-      name: "Jakarta, Indonesia",
+      name: 'Jakarta, Indonesia',
       latlng: {
         lat: -6.2146,
         lng: 106.8451,
       },
-      iso: "ID",
+      iso: 'ID',
     },
     {
-      name: "Manila, Philippines",
+      name: 'Manila, Philippines',
       latlng: {
         lat: 14.6,
         lng: 120.9833,
       },
-      iso: "PH",
+      iso: 'PH',
     },
     {
-      name: "Seoul, South Korea",
+      name: 'Seoul, South Korea',
       latlng: {
         lat: 37.56,
         lng: 126.99,
       },
-      iso: "KR",
+      iso: 'KR',
     },
     {
-      name: "Mexico City, Mexico",
+      name: 'Mexico City, Mexico',
       latlng: {
         lat: 19.4333,
         lng: -99.1333,
       },
-      iso: "MX",
+      iso: 'MX',
     },
     {
-      name: "Cairo, Egypt",
+      name: 'Cairo, Egypt',
       latlng: {
         lat: 30.0444,
         lng: 31.2358,
       },
-      iso: "EG",
+      iso: 'EG',
     },
     {
-      name: "Beijing, China",
+      name: 'Beijing, China',
       latlng: {
         lat: 39.904,
         lng: 116.4075,
       },
-      iso: "CN",
+      iso: 'CN',
     },
     {
-      name: "Moscow, Russia",
+      name: 'Moscow, Russia',
       latlng: {
         lat: 55.7558,
         lng: 37.6178,
       },
-      iso: "RU",
+      iso: 'RU',
     },
     {
-      name: "Bangkok, Thailand",
+      name: 'Bangkok, Thailand',
       latlng: {
         lat: 13.75,
         lng: 100.5167,
       },
-      iso: "TH",
+      iso: 'TH',
     },
     {
-      name: "Dhaka, Bangladesh",
+      name: 'Dhaka, Bangladesh',
       latlng: {
         lat: 23.7289,
         lng: 90.3944,
       },
-      iso: "BD",
+      iso: 'BD',
     },
     {
-      name: "Buenos Aires, Argentina",
+      name: 'Buenos Aires, Argentina',
       latlng: {
         lat: -34.5997,
         lng: -58.3819,
       },
-      iso: "AR",
+      iso: 'AR',
     },
     {
-      name: "Kinshasa, Congo (Kinshasa)",
+      name: 'Kinshasa, Congo (Kinshasa)',
       latlng: {
         lat: -4.3317,
         lng: 15.3139,
       },
-      iso: "CD",
+      iso: 'CD',
     },
     {
-      name: "Tehran, Iran",
+      name: 'Tehran, Iran',
       latlng: {
         lat: 35.7,
         lng: 51.4167,
       },
-      iso: "IR",
+      iso: 'IR',
     },
     {
-      name: "London, United Kingdom",
+      name: 'London, United Kingdom',
       latlng: {
         lat: 51.5072,
         lng: -0.1275,
       },
-      iso: "GB",
+      iso: 'GB',
     },
     {
-      name: "Paris, France",
+      name: 'Paris, France',
       latlng: {
         lat: 48.8566,
         lng: 2.3522,
       },
-      iso: "FR",
+      iso: 'FR',
     },
     {
-      name: "Lima, Peru",
+      name: 'Lima, Peru',
       latlng: {
         lat: -12.06,
         lng: -77.0375,
       },
-      iso: "PE",
+      iso: 'PE',
     },
     {
-      name: "Luanda, Angola",
+      name: 'Luanda, Angola',
       latlng: {
         lat: -8.8383,
         lng: 13.2344,
       },
-      iso: "AO",
+      iso: 'AO',
     },
     {
-      name: "Kuala Lumpur, Malaysia",
+      name: 'Kuala Lumpur, Malaysia',
       latlng: {
         lat: 3.1478,
         lng: 101.6953,
       },
-      iso: "MY",
+      iso: 'MY',
     },
     {
-      name: "Hanoi, Vietnam",
+      name: 'Hanoi, Vietnam',
       latlng: {
         lat: 21.0245,
         lng: 105.8412,
       },
-      iso: "VN",
+      iso: 'VN',
     },
     {
-      name: "Bogotá, Colombia",
+      name: 'Bogotá, Colombia',
       latlng: {
         lat: 4.6126,
         lng: -74.0705,
       },
-      iso: "CO",
+      iso: 'CO',
     },
     {
-      name: "Dar es Salaam, Tanzania",
+      name: 'Dar es Salaam, Tanzania',
       latlng: {
         lat: -6.8,
         lng: 39.2833,
       },
-      iso: "TZ",
+      iso: 'TZ',
     },
     {
-      name: "Hong Kong, Hong Kong",
+      name: 'Hong Kong, Hong Kong',
       latlng: {
         lat: 22.3069,
         lng: 114.1831,
       },
-      iso: "HK",
+      iso: 'HK',
     },
     {
-      name: "Santiago, Chile",
+      name: 'Santiago, Chile',
       latlng: {
         lat: -33.45,
         lng: -70.6667,
       },
-      iso: "CL",
+      iso: 'CL',
     },
     {
-      name: "Riyadh, Saudi Arabia",
+      name: 'Riyadh, Saudi Arabia',
       latlng: {
         lat: 24.65,
         lng: 46.71,
       },
-      iso: "SA",
+      iso: 'SA',
     },
     {
-      name: "Baghdad, Iraq",
+      name: 'Baghdad, Iraq',
       latlng: {
         lat: 33.35,
         lng: 44.4167,
       },
-      iso: "IQ",
+      iso: 'IQ',
     },
     {
-      name: "Khartoum, Sudan",
+      name: 'Khartoum, Sudan',
       latlng: {
         lat: 15.6031,
         lng: 32.5265,
       },
-      iso: "SD",
+      iso: 'SD',
     },
     {
-      name: "Madrid, Spain",
+      name: 'Madrid, Spain',
       latlng: {
         lat: 40.4167,
         lng: -3.7167,
       },
-      iso: "ES",
+      iso: 'ES',
     },
     {
-      name: "Nairobi, Kenya",
+      name: 'Nairobi, Kenya',
       latlng: {
         lat: -1.2864,
         lng: 36.8172,
       },
-      iso: "KE",
+      iso: 'KE',
     },
     {
-      name: "Rangoon, Myanmar",
+      name: 'Rangoon, Myanmar',
       latlng: {
         lat: 16.795,
         lng: 96.16,
       },
-      iso: "MM",
+      iso: 'MM',
     },
     {
-      name: "Washington, United States",
+      name: 'Washington, United States',
       latlng: {
         lat: 38.9047,
         lng: -77.0163,
       },
-      iso: "US",
+      iso: 'US',
     },
     {
-      name: "Singapore, Singapore",
+      name: 'Singapore, Singapore',
       latlng: {
         lat: 1.3,
         lng: 103.8,
       },
-      iso: "SG",
+      iso: 'SG',
     },
     {
       name: "Abidjan, Côte d'Ivoire",
@@ -278,887 +279,887 @@ const game = {
         lat: 5.3364,
         lng: -4.0267,
       },
-      iso: "CI",
+      iso: 'CI',
     },
     {
-      name: "Kabul, Afghanistan",
+      name: 'Kabul, Afghanistan',
       latlng: {
         lat: 34.5328,
         lng: 69.1658,
       },
-      iso: "AF",
+      iso: 'AF',
     },
     {
-      name: "Amman, Jordan",
+      name: 'Amman, Jordan',
       latlng: {
         lat: 31.95,
         lng: 35.9333,
       },
-      iso: "JO",
+      iso: 'JO',
     },
     {
-      name: "Berlin, Germany",
+      name: 'Berlin, Germany',
       latlng: {
         lat: 52.5167,
         lng: 13.3833,
       },
-      iso: "DE",
+      iso: 'DE',
     },
     {
-      name: "Algiers, Algeria",
+      name: 'Algiers, Algeria',
       latlng: {
         lat: 36.7764,
         lng: 3.0586,
       },
-      iso: "DZ",
+      iso: 'DZ',
     },
     {
-      name: "Addis Ababa, Ethiopia",
+      name: 'Addis Ababa, Ethiopia',
       latlng: {
         lat: 9.0272,
         lng: 38.7369,
       },
-      iso: "ET",
+      iso: 'ET',
     },
     {
-      name: "Brasília, Brazil",
+      name: 'Brasília, Brazil',
       latlng: {
         lat: -15.7939,
         lng: -47.8828,
       },
-      iso: "BR",
+      iso: 'BR',
     },
     {
-      name: "Kuwait City, Kuwait",
+      name: 'Kuwait City, Kuwait',
       latlng: {
         lat: 29.375,
         lng: 47.98,
       },
-      iso: "KW",
+      iso: 'KW',
     },
     {
-      name: "Kyiv, Ukraine",
+      name: 'Kyiv, Ukraine',
       latlng: {
         lat: 50.45,
         lng: 30.5236,
       },
-      iso: "UA",
+      iso: 'UA',
     },
     {
-      name: "Sanaa, Yemen",
+      name: 'Sanaa, Yemen',
       latlng: {
         lat: 15.35,
         lng: 44.2,
       },
-      iso: "YE",
+      iso: 'YE',
     },
     {
-      name: "Guatemala City, Guatemala",
+      name: 'Guatemala City, Guatemala',
       latlng: {
         lat: 14.6099,
         lng: -90.5252,
       },
-      iso: "GT",
+      iso: 'GT',
     },
     {
-      name: "Rome, Italy",
+      name: 'Rome, Italy',
       latlng: {
         lat: 41.8931,
         lng: 12.4828,
       },
-      iso: "IT",
+      iso: 'IT',
     },
     {
-      name: "La Paz, Bolivia",
+      name: 'La Paz, Bolivia',
       latlng: {
         lat: -16.4942,
         lng: -68.1475,
       },
-      iso: "BO",
+      iso: 'BO',
     },
     {
-      name: "Pyongyang, North Korea",
+      name: 'Pyongyang, North Korea',
       latlng: {
         lat: 39.03,
         lng: 125.73,
       },
-      iso: "KP",
+      iso: 'KP',
     },
     {
-      name: "Antananarivo, Madagascar",
+      name: 'Antananarivo, Madagascar',
       latlng: {
         lat: -18.9386,
         lng: 47.5214,
       },
-      iso: "MG",
+      iso: 'MG',
     },
     {
-      name: "Santo Domingo, Dominican Republic",
+      name: 'Santo Domingo, Dominican Republic',
       latlng: {
         lat: 18.4764,
         lng: -69.8933,
       },
-      iso: "DO",
+      iso: 'DO',
     },
     {
-      name: "Tashkent, Uzbekistan",
+      name: 'Tashkent, Uzbekistan',
       latlng: {
         lat: 41.3,
         lng: 69.2667,
       },
-      iso: "UZ",
+      iso: 'UZ',
     },
     {
-      name: "Ouagadougou, Burkina Faso",
+      name: 'Ouagadougou, Burkina Faso',
       latlng: {
         lat: 12.3686,
         lng: -1.5275,
       },
-      iso: "BF",
+      iso: 'BF',
     },
     {
-      name: "Yaoundé, Cameroon",
+      name: 'Yaoundé, Cameroon',
       latlng: {
         lat: 3.8578,
         lng: 11.5181,
       },
-      iso: "CM",
+      iso: 'CM',
     },
     {
-      name: "Accra, Ghana",
+      name: 'Accra, Ghana',
       latlng: {
         lat: 5.6037,
         lng: -0.187,
       },
-      iso: "GH",
+      iso: 'GH',
     },
     {
-      name: "Baku, Azerbaijan",
+      name: 'Baku, Azerbaijan',
       latlng: {
         lat: 40.3667,
         lng: 49.8352,
       },
-      iso: "AZ",
+      iso: 'AZ',
     },
     {
-      name: "Harare, Zimbabwe",
+      name: 'Harare, Zimbabwe',
       latlng: {
         lat: -17.8292,
         lng: 31.0522,
       },
-      iso: "ZW",
+      iso: 'ZW',
     },
     {
-      name: "Havana, Cuba",
+      name: 'Havana, Cuba',
       latlng: {
         lat: 23.1367,
         lng: -82.3589,
       },
-      iso: "CU",
+      iso: 'CU',
     },
     {
-      name: "Phnom Penh, Cambodia",
+      name: 'Phnom Penh, Cambodia',
       latlng: {
         lat: 11.5696,
         lng: 104.921,
       },
-      iso: "KH",
+      iso: 'KH',
     },
     {
-      name: "Mogadishu, Somalia",
+      name: 'Mogadishu, Somalia',
       latlng: {
         lat: 2.0408,
         lng: 45.3425,
       },
-      iso: "SO",
+      iso: 'SO',
     },
     {
-      name: "Bamako, Mali",
+      name: 'Bamako, Mali',
       latlng: {
         lat: 12.6458,
         lng: -7.9922,
       },
-      iso: "ML",
+      iso: 'ML',
     },
     {
-      name: "Quito, Ecuador",
+      name: 'Quito, Ecuador',
       latlng: {
         lat: -0.22,
         lng: -78.5125,
       },
-      iso: "EC",
+      iso: 'EC',
     },
     {
-      name: "Minsk, Belarus",
+      name: 'Minsk, Belarus',
       latlng: {
         lat: 53.9022,
         lng: 27.5618,
       },
-      iso: "BY",
+      iso: 'BY',
     },
     {
-      name: "Caracas, Venezuela",
+      name: 'Caracas, Venezuela',
       latlng: {
         lat: 10.5,
         lng: -66.9333,
       },
-      iso: "VE",
+      iso: 'VE',
     },
     {
-      name: "Vienna, Austria",
+      name: 'Vienna, Austria',
       latlng: {
         lat: 48.2083,
         lng: 16.3725,
       },
-      iso: "AT",
+      iso: 'AT',
     },
     {
-      name: "Bucharest, Romania",
+      name: 'Bucharest, Romania',
       latlng: {
         lat: 44.4,
         lng: 26.0833,
       },
-      iso: "RO",
+      iso: 'RO',
     },
     {
-      name: "Brazzaville, Congo (Brazzaville)",
+      name: 'Brazzaville, Congo (Brazzaville)',
       latlng: {
         lat: -4.2667,
         lng: 15.2833,
       },
-      iso: "CG",
+      iso: 'CG',
     },
     {
-      name: "Warsaw, Poland",
+      name: 'Warsaw, Poland',
       latlng: {
         lat: 52.23,
         lng: 21.0111,
       },
-      iso: "PL",
+      iso: 'PL',
     },
     {
-      name: "Damascus, Syria",
+      name: 'Damascus, Syria',
       latlng: {
         lat: 33.5131,
         lng: 36.2919,
       },
-      iso: "SY",
+      iso: 'SY',
     },
     {
-      name: "Brussels, Belgium",
+      name: 'Brussels, Belgium',
       latlng: {
         lat: 50.8353,
         lng: 4.3314,
       },
-      iso: "BE",
+      iso: 'BE',
     },
     {
-      name: "Lusaka, Zambia",
+      name: 'Lusaka, Zambia',
       latlng: {
         lat: -15.4167,
         lng: 28.2833,
       },
-      iso: "ZM",
+      iso: 'ZM',
     },
     {
-      name: "Budapest, Hungary",
+      name: 'Budapest, Hungary',
       latlng: {
         lat: 47.4983,
         lng: 19.0408,
       },
-      iso: "HU",
+      iso: 'HU',
     },
     {
-      name: "Conakry, Guinea",
+      name: 'Conakry, Guinea',
       latlng: {
         lat: 9.538,
         lng: -13.6773,
       },
-      iso: "GN",
+      iso: 'GN',
     },
     {
-      name: "Kampala, Uganda",
+      name: 'Kampala, Uganda',
       latlng: {
         lat: 0.3136,
         lng: 32.5811,
       },
-      iso: "UG",
+      iso: 'UG',
     },
     {
-      name: "Abu Dhabi, United Arab Emirates",
+      name: 'Abu Dhabi, United Arab Emirates',
       latlng: {
         lat: 24.4511,
         lng: 54.3969,
       },
-      iso: "AE",
+      iso: 'AE',
     },
     {
-      name: "Muscat, Oman",
+      name: 'Muscat, Oman',
       latlng: {
         lat: 23.6139,
         lng: 58.5922,
       },
-      iso: "OM",
+      iso: 'OM',
     },
     {
-      name: "Ulaanbaatar, Mongolia",
+      name: 'Ulaanbaatar, Mongolia',
       latlng: {
         lat: 47.9214,
         lng: 106.9055,
       },
-      iso: "MN",
+      iso: 'MN',
     },
     {
-      name: "Belgrade, Serbia",
+      name: 'Belgrade, Serbia',
       latlng: {
         lat: 44.8167,
         lng: 20.4667,
       },
-      iso: "RS",
+      iso: 'RS',
     },
     {
-      name: "Prague, Czechia",
+      name: 'Prague, Czechia',
       latlng: {
         lat: 50.0833,
         lng: 14.4167,
       },
-      iso: "CZ",
+      iso: 'CZ',
     },
     {
-      name: "Montevideo, Uruguay",
+      name: 'Montevideo, Uruguay',
       latlng: {
         lat: -34.8667,
         lng: -56.1667,
       },
-      iso: "UY",
+      iso: 'UY',
     },
     {
-      name: "Sofia, Bulgaria",
+      name: 'Sofia, Bulgaria',
       latlng: {
         lat: 42.6979,
         lng: 23.3217,
       },
-      iso: "BG",
+      iso: 'BG',
     },
     {
-      name: "Abuja, Nigeria",
+      name: 'Abuja, Nigeria',
       latlng: {
         lat: 9.0556,
         lng: 7.4914,
       },
-      iso: "NG",
+      iso: 'NG',
     },
     {
-      name: "Maputo, Mozambique",
+      name: 'Maputo, Mozambique',
       latlng: {
         lat: -25.9153,
         lng: 32.5764,
       },
-      iso: "MZ",
+      iso: 'MZ',
     },
     {
-      name: "Doha, Qatar",
+      name: 'Doha, Qatar',
       latlng: {
         lat: 25.3,
         lng: 51.5333,
       },
-      iso: "QA",
+      iso: 'QA',
     },
     {
-      name: "Dakar, Senegal",
+      name: 'Dakar, Senegal',
       latlng: {
         lat: 14.7319,
         lng: -17.4572,
       },
-      iso: "SN",
+      iso: 'SN',
     },
     {
-      name: "Nay Pyi Taw, Myanmar",
+      name: 'Nay Pyi Taw, Myanmar',
       latlng: {
         lat: 19.7475,
         lng: 96.115,
       },
-      iso: "MM",
+      iso: 'MM',
     },
     {
-      name: "Kigali, Rwanda",
+      name: 'Kigali, Rwanda',
       latlng: {
         lat: -1.9536,
         lng: 30.0606,
       },
-      iso: "RW",
+      iso: 'RW',
     },
     {
-      name: "Tripoli, Libya",
+      name: 'Tripoli, Libya',
       latlng: {
         lat: 32.8752,
         lng: 13.1875,
       },
-      iso: "LY",
+      iso: 'LY',
     },
     {
-      name: "Tegucigalpa, Honduras",
+      name: 'Tegucigalpa, Honduras',
       latlng: {
         lat: 14.0942,
         lng: -87.2067,
       },
-      iso: "HN",
+      iso: 'HN',
     },
     {
-      name: "Tbilisi, Georgia",
+      name: 'Tbilisi, Georgia',
       latlng: {
         lat: 41.7225,
         lng: 44.7925,
       },
-      iso: "GE",
+      iso: 'GE',
     },
     {
-      name: "N’Djamena, Chad",
+      name: 'N’Djamena, Chad',
       latlng: {
         lat: 12.11,
         lng: 15.05,
       },
-      iso: "TD",
+      iso: 'TD',
     },
     {
-      name: "Copenhagen, Denmark",
+      name: 'Copenhagen, Denmark',
       latlng: {
         lat: 55.6805,
         lng: 12.5615,
       },
-      iso: "DK",
+      iso: 'DK',
     },
     {
-      name: "Yerevan, Armenia",
+      name: 'Yerevan, Armenia',
       latlng: {
         lat: 40.1814,
         lng: 44.5144,
       },
-      iso: "AM",
+      iso: 'AM',
     },
     {
-      name: "Nur-Sultan, Kazakhstan",
+      name: 'Nur-Sultan, Kazakhstan',
       latlng: {
         lat: 51.1333,
         lng: 71.4333,
       },
-      iso: "KZ",
+      iso: 'KZ',
     },
     {
-      name: "Nouakchott, Mauritania",
+      name: 'Nouakchott, Mauritania',
       latlng: {
         lat: 18.0858,
         lng: -15.9785,
       },
-      iso: "MR",
+      iso: 'MR',
     },
     {
-      name: "Bishkek, Kyrgyzstan",
+      name: 'Bishkek, Kyrgyzstan',
       latlng: {
         lat: 42.8667,
         lng: 74.5667,
       },
-      iso: "KG",
+      iso: 'KG',
     },
     {
-      name: "Tunis, Tunisia",
+      name: 'Tunis, Tunisia',
       latlng: {
         lat: 36.8008,
         lng: 10.18,
       },
-      iso: "TN",
+      iso: 'TN',
     },
     {
-      name: "Kathmandu, Nepal",
+      name: 'Kathmandu, Nepal',
       latlng: {
         lat: 27.7167,
         lng: 85.3667,
       },
-      iso: "NP",
+      iso: 'NP',
     },
     {
-      name: "Niamey, Niger",
+      name: 'Niamey, Niger',
       latlng: {
         lat: 13.5086,
         lng: 2.1111,
       },
-      iso: "NE",
+      iso: 'NE',
     },
     {
-      name: "Managua, Nicaragua",
+      name: 'Managua, Nicaragua',
       latlng: {
         lat: 12.15,
         lng: -86.2667,
       },
-      iso: "NI",
+      iso: 'NI',
     },
     {
-      name: "Monrovia, Liberia",
+      name: 'Monrovia, Liberia',
       latlng: {
         lat: 6.3106,
         lng: -10.8047,
       },
-      iso: "LR",
+      iso: 'LR',
     },
     {
-      name: "Port-au-Prince, Haiti",
+      name: 'Port-au-Prince, Haiti',
       latlng: {
         lat: 18.5425,
         lng: -72.3386,
       },
-      iso: "HT",
+      iso: 'HT',
     },
     {
-      name: "Islamabad, Pakistan",
+      name: 'Islamabad, Pakistan',
       latlng: {
         lat: 33.6989,
         lng: 73.0369,
       },
-      iso: "PK",
+      iso: 'PK',
     },
     {
-      name: "Ottawa, Canada",
+      name: 'Ottawa, Canada',
       latlng: {
         lat: 45.4247,
         lng: -75.695,
       },
-      iso: "CA",
+      iso: 'CA',
     },
     {
-      name: "Stockholm, Sweden",
+      name: 'Stockholm, Sweden',
       latlng: {
         lat: 59.3294,
         lng: 18.0686,
       },
-      iso: "SE",
+      iso: 'SE',
     },
     {
-      name: "Asmara, Eritrea",
+      name: 'Asmara, Eritrea',
       latlng: {
         lat: 15.3333,
         lng: 38.9167,
       },
-      iso: "ER",
+      iso: 'ER',
     },
     {
-      name: "Freetown, Sierra Leone",
+      name: 'Freetown, Sierra Leone',
       latlng: {
         lat: 8.4833,
         lng: -13.2331,
       },
-      iso: "SL",
+      iso: 'SL',
     },
     {
-      name: "Vientiane, Laos",
+      name: 'Vientiane, Laos',
       latlng: {
         lat: 17.9667,
         lng: 102.6,
       },
-      iso: "LA",
+      iso: 'LA',
     },
     {
-      name: "Jerusalem, Israel",
+      name: 'Jerusalem, Israel',
       latlng: {
         lat: 31.7833,
         lng: 35.2167,
       },
-      iso: "IL",
+      iso: 'IL',
     },
     {
-      name: "Bangui, Central African Republic",
+      name: 'Bangui, Central African Republic',
       latlng: {
         lat: 4.3732,
         lng: 18.5628,
       },
-      iso: "CF",
+      iso: 'CF',
     },
     {
-      name: "Panama City, Panama",
+      name: 'Panama City, Panama',
       latlng: {
         lat: 9,
         lng: -79.5,
       },
-      iso: "PA",
+      iso: 'PA',
     },
     {
-      name: "Amsterdam, Netherlands",
+      name: 'Amsterdam, Netherlands',
       latlng: {
         lat: 52.3667,
         lng: 4.8833,
       },
-      iso: "NL",
+      iso: 'NL',
     },
     {
-      name: "Lomé, Togo",
+      name: 'Lomé, Togo',
       latlng: {
         lat: 6.1319,
         lng: 1.2228,
       },
-      iso: "TG",
+      iso: 'TG',
     },
     {
-      name: "Libreville, Gabon",
+      name: 'Libreville, Gabon',
       latlng: {
         lat: 0.3901,
         lng: 9.4544,
       },
-      iso: "GA",
+      iso: 'GA',
     },
     {
-      name: "Zagreb, Croatia",
+      name: 'Zagreb, Croatia',
       latlng: {
         lat: 45.8131,
         lng: 15.9772,
       },
-      iso: "HR",
+      iso: 'HR',
     },
     {
-      name: "Dushanbe, Tajikistan",
+      name: 'Dushanbe, Tajikistan',
       latlng: {
         lat: 38.5731,
         lng: 68.7864,
       },
-      iso: "TJ",
+      iso: 'TJ',
     },
     {
-      name: "Lilongwe, Malawi",
+      name: 'Lilongwe, Malawi',
       latlng: {
         lat: -13.9833,
         lng: 33.7833,
       },
-      iso: "MW",
+      iso: 'MW',
     },
     {
-      name: "Cotonou, Benin",
+      name: 'Cotonou, Benin',
       latlng: {
         lat: 6.402,
         lng: 2.518,
       },
-      iso: "BJ",
+      iso: 'BJ',
     },
     {
-      name: "Colombo, Sri Lanka",
+      name: 'Colombo, Sri Lanka',
       latlng: {
         lat: 6.9167,
         lng: 79.8333,
       },
-      iso: "LK",
+      iso: 'LK',
     },
     {
-      name: "Pretoria, South Africa",
+      name: 'Pretoria, South Africa',
       latlng: {
         lat: -25.7464,
         lng: 28.1881,
       },
-      iso: "ZA",
+      iso: 'ZA',
     },
     {
-      name: "Oslo, Norway",
+      name: 'Oslo, Norway',
       latlng: {
         lat: 59.9111,
         lng: 10.7528,
       },
-      iso: "NO",
+      iso: 'NO',
     },
     {
-      name: "Athens, Greece",
+      name: 'Athens, Greece',
       latlng: {
         lat: 37.9842,
         lng: 23.7281,
       },
-      iso: "GR",
+      iso: 'GR',
     },
     {
-      name: "Bujumbura, Burundi",
+      name: 'Bujumbura, Burundi',
       latlng: {
         lat: -3.3825,
         lng: 29.3611,
       },
-      iso: "BI",
+      iso: 'BI',
     },
     {
-      name: "Helsinki, Finland",
+      name: 'Helsinki, Finland',
       latlng: {
         lat: 60.1756,
         lng: 24.9342,
       },
-      iso: "FI",
+      iso: 'FI',
     },
     {
-      name: "Skopje, Macedonia",
+      name: 'Skopje, Macedonia',
       latlng: {
         lat: 41.9833,
         lng: 21.4333,
       },
-      iso: "MK",
+      iso: 'MK',
     },
     {
-      name: "Chisinau, Moldova",
+      name: 'Chisinau, Moldova',
       latlng: {
         lat: 47.0228,
         lng: 28.8353,
       },
-      iso: "MD",
+      iso: 'MD',
     },
     {
-      name: "Riga, Latvia",
+      name: 'Riga, Latvia',
       latlng: {
         lat: 56.9475,
         lng: 24.1069,
       },
-      iso: "LV",
+      iso: 'LV',
     },
     {
-      name: "Kingston, Jamaica",
+      name: 'Kingston, Jamaica',
       latlng: {
         lat: 17.9714,
         lng: -76.7931,
       },
-      iso: "JM",
+      iso: 'JM',
     },
     {
-      name: "Rabat, Morocco",
+      name: 'Rabat, Morocco',
       latlng: {
         lat: 34.0253,
         lng: -6.8361,
       },
-      iso: "MA",
+      iso: 'MA',
     },
     {
-      name: "Vilnius, Lithuania",
+      name: 'Vilnius, Lithuania',
       latlng: {
         lat: 54.6833,
         lng: 25.2833,
       },
-      iso: "LT",
+      iso: 'LT',
     },
     {
-      name: "San Salvador, El Salvador",
+      name: 'San Salvador, El Salvador',
       latlng: {
         lat: 13.6989,
         lng: -89.1914,
       },
-      iso: "SV",
+      iso: 'SV',
     },
     {
-      name: "Djibouti, Djibouti",
+      name: 'Djibouti, Djibouti',
       latlng: {
         lat: 11.595,
         lng: 43.1481,
       },
-      iso: "DJ",
+      iso: 'DJ',
     },
     {
-      name: "Dublin, Ireland",
+      name: 'Dublin, Ireland',
       latlng: {
         lat: 53.3497,
         lng: -6.2603,
       },
-      iso: "IE",
+      iso: 'IE',
     },
     {
-      name: "The Hague, Netherlands",
+      name: 'The Hague, Netherlands',
       latlng: {
         lat: 52.08,
         lng: 4.31,
       },
-      iso: "NL",
+      iso: 'NL',
     },
     {
-      name: "Asunción, Paraguay",
+      name: 'Asunción, Paraguay',
       latlng: {
         lat: -25.3,
         lng: -57.6333,
       },
-      iso: "PY",
+      iso: 'PY',
     },
     {
-      name: "Lisbon, Portugal",
+      name: 'Lisbon, Portugal',
       latlng: {
         lat: 38.708,
         lng: -9.139,
       },
-      iso: "PT",
+      iso: 'PT',
     },
     {
-      name: "Bratislava, Slovakia",
+      name: 'Bratislava, Slovakia',
       latlng: {
         lat: 48.1447,
         lng: 17.1128,
       },
-      iso: "SK",
+      iso: 'SK',
     },
     {
-      name: "Tallinn, Estonia",
+      name: 'Tallinn, Estonia',
       latlng: {
         lat: 59.4372,
         lng: 24.745,
       },
-      iso: "EE",
+      iso: 'EE',
     },
     {
-      name: "Beirut, Lebanon",
+      name: 'Beirut, Lebanon',
       latlng: {
         lat: 33.8869,
         lng: 35.5131,
       },
-      iso: "LB",
+      iso: 'LB',
     },
     {
-      name: "Cape Town, South Africa",
+      name: 'Cape Town, South Africa',
       latlng: {
         lat: -33.925,
         lng: 18.425,
       },
-      iso: "ZA",
+      iso: 'ZA',
     },
     {
-      name: "Tirana, Albania",
+      name: 'Tirana, Albania',
       latlng: {
         lat: 41.33,
         lng: 19.82,
       },
-      iso: "AL",
+      iso: 'AL',
     },
     {
-      name: "Wellington, New Zealand",
+      name: 'Wellington, New Zealand',
       latlng: {
         lat: -41.2889,
         lng: 174.7772,
       },
-      iso: "NZ",
+      iso: 'NZ',
     },
     {
-      name: "Dodoma, Tanzania",
+      name: 'Dodoma, Tanzania',
       latlng: {
         lat: -6.1835,
         lng: 35.746,
       },
-      iso: "TZ",
+      iso: 'TZ',
     },
     {
-      name: "Bissau, Guinea-Bissau",
+      name: 'Bissau, Guinea-Bissau',
       latlng: {
         lat: 11.8592,
         lng: -15.5956,
       },
-      iso: "GW",
+      iso: 'GW',
     },
     {
-      name: "Canberra, Australia",
+      name: 'Canberra, Australia',
       latlng: {
         lat: -35.2931,
         lng: 149.1269,
       },
-      iso: "AU",
+      iso: 'AU',
     },
     {
-      name: "Juba, South Sudan",
+      name: 'Juba, South Sudan',
       latlng: {
         lat: 4.85,
         lng: 31.6,
       },
-      iso: "SS",
+      iso: 'SS',
     },
     {
       name: "Yamoussoukro, Côte d'Ivoire",
@@ -1166,639 +1167,639 @@ const game = {
         lat: 6.8161,
         lng: -5.2742,
       },
-      iso: "CI",
+      iso: 'CI',
     },
     {
-      name: "Maseru, Lesotho",
+      name: 'Maseru, Lesotho',
       latlng: {
         lat: -29.31,
         lng: 27.48,
       },
-      iso: "LS",
+      iso: 'LS',
     },
     {
-      name: "Nicosia, Cyprus",
+      name: 'Nicosia, Cyprus',
       latlng: {
         lat: 35.1725,
         lng: 33.365,
       },
-      iso: "CY",
+      iso: 'CY',
     },
     {
-      name: "Windhoek, Namibia",
+      name: 'Windhoek, Namibia',
       latlng: {
         lat: -22.57,
         lng: 17.0836,
       },
-      iso: "NA",
+      iso: 'NA',
     },
     {
-      name: "Port Moresby, Papua New Guinea",
+      name: 'Port Moresby, Papua New Guinea',
       latlng: {
         lat: -9.4789,
         lng: 147.1494,
       },
-      iso: "PG",
+      iso: 'PG',
     },
     {
-      name: "Porto-Novo, Benin",
+      name: 'Porto-Novo, Benin',
       latlng: {
         lat: 6.4833,
         lng: 2.6167,
       },
-      iso: "BJ",
+      iso: 'BJ',
     },
     {
-      name: "Sucre, Bolivia",
+      name: 'Sucre, Bolivia',
       latlng: {
         lat: -19.0431,
         lng: -65.2592,
       },
-      iso: "BO",
+      iso: 'BO',
     },
     {
-      name: "San José, Costa Rica",
+      name: 'San José, Costa Rica',
       latlng: {
         lat: 9.9333,
         lng: -84.0833,
       },
-      iso: "CR",
+      iso: 'CR',
     },
     {
-      name: "Ljubljana, Slovenia",
+      name: 'Ljubljana, Slovenia',
       latlng: {
         lat: 46.05,
         lng: 14.5167,
       },
-      iso: "SI",
+      iso: 'SI',
     },
     {
-      name: "Sarajevo, Bosnia And Herzegovina",
+      name: 'Sarajevo, Bosnia And Herzegovina',
       latlng: {
         lat: 43.8563,
         lng: 18.4132,
       },
-      iso: "BA",
+      iso: 'BA',
     },
     {
-      name: "Nassau, The Bahamas",
+      name: 'Nassau, The Bahamas',
       latlng: {
         lat: 25.0667,
         lng: -77.3333,
       },
-      iso: "BS",
+      iso: 'BS',
     },
     {
-      name: "Bloemfontein, South Africa",
+      name: 'Bloemfontein, South Africa',
       latlng: {
         lat: -29.1,
         lng: 26.2167,
       },
-      iso: "ZA",
+      iso: 'ZA',
     },
     {
-      name: "Fort-de-France, Martinique",
+      name: 'Fort-de-France, Martinique',
       latlng: {
         lat: 14.6104,
         lng: -61.08,
       },
-      iso: "MQ",
+      iso: 'MQ',
     },
     {
-      name: "New Delhi, India",
+      name: 'New Delhi, India',
       latlng: {
         lat: 28.6139,
         lng: 77.209,
       },
-      iso: "IN",
+      iso: 'IN',
     },
     {
-      name: "Gaborone, Botswana",
+      name: 'Gaborone, Botswana',
       latlng: {
         lat: -24.6569,
         lng: 25.9086,
       },
-      iso: "BW",
+      iso: 'BW',
     },
     {
-      name: "Paramaribo, Suriname",
+      name: 'Paramaribo, Suriname',
       latlng: {
         lat: 5.8667,
         lng: -55.1667,
       },
-      iso: "SR",
+      iso: 'SR',
     },
     {
-      name: "Dili, Timor-Leste",
+      name: 'Dili, Timor-Leste',
       latlng: {
         lat: -8.5536,
         lng: 125.5783,
       },
-      iso: "TL",
+      iso: 'TL',
     },
     {
-      name: "Male, Maldives",
+      name: 'Male, Maldives',
       latlng: {
         lat: 4.175,
         lng: 73.5083,
       },
-      iso: "MV",
+      iso: 'MV',
     },
     {
-      name: "Georgetown, Guyana",
+      name: 'Georgetown, Guyana',
       latlng: {
         lat: 6.7833,
         lng: -58.1667,
       },
-      iso: "GY",
+      iso: 'GY',
     },
     {
-      name: "Gibraltar, Gibraltar",
+      name: 'Gibraltar, Gibraltar',
       latlng: {
         lat: 36.1324,
         lng: -5.3781,
       },
-      iso: "GI",
+      iso: 'GI',
     },
     {
-      name: "Saint-Denis, Reunion",
+      name: 'Saint-Denis, Reunion',
       latlng: {
         lat: -20.8789,
         lng: 55.4481,
       },
-      iso: "RE",
+      iso: 'RE',
     },
     {
-      name: "Malabo, Equatorial Guinea",
+      name: 'Malabo, Equatorial Guinea',
       latlng: {
         lat: 3.7521,
         lng: 8.7737,
       },
-      iso: "GQ",
+      iso: 'GQ',
     },
     {
-      name: "Podgorica, Montenegro",
+      name: 'Podgorica, Montenegro',
       latlng: {
         lat: 42.4397,
         lng: 19.2661,
       },
-      iso: "ME",
+      iso: 'ME',
     },
     {
-      name: "Manama, Bahrain",
+      name: 'Manama, Bahrain',
       latlng: {
         lat: 26.225,
         lng: 50.5775,
       },
-      iso: "BH",
+      iso: 'BH',
     },
     {
-      name: "Port Louis, Mauritius",
+      name: 'Port Louis, Mauritius',
       latlng: {
         lat: -20.1667,
         lng: 57.5,
       },
-      iso: "MU",
+      iso: 'MU',
     },
     {
-      name: "Willemstad, Curaçao",
+      name: 'Willemstad, Curaçao',
       latlng: {
         lat: 12.108,
         lng: -68.935,
       },
-      iso: "CW",
+      iso: 'CW',
     },
     {
-      name: "Bern, Switzerland",
+      name: 'Bern, Switzerland',
       latlng: {
         lat: 46.948,
         lng: 7.4474,
       },
-      iso: "CH",
+      iso: 'CH',
     },
     {
-      name: "Papeete, French Polynesia",
+      name: 'Papeete, French Polynesia',
       latlng: {
         lat: -17.5334,
         lng: -149.5667,
       },
-      iso: "PF",
+      iso: 'PF',
     },
     {
-      name: "Luxembourg, Luxembourg",
+      name: 'Luxembourg, Luxembourg',
       latlng: {
         lat: 49.6106,
         lng: 6.1328,
       },
-      iso: "LU",
+      iso: 'LU',
     },
     {
-      name: "Reykjavík, Iceland",
+      name: 'Reykjavík, Iceland',
       latlng: {
         lat: 64.1475,
         lng: -21.935,
       },
-      iso: "IS",
+      iso: 'IS',
     },
     {
-      name: "Praia, Cabo Verde",
+      name: 'Praia, Cabo Verde',
       latlng: {
         lat: 14.9177,
         lng: -23.5092,
       },
-      iso: "CV",
+      iso: 'CV',
     },
     {
-      name: "Sri Jayewardenepura Kotte, Sri Lanka",
+      name: 'Sri Jayewardenepura Kotte, Sri Lanka',
       latlng: {
         lat: 6.9,
         lng: 79.9164,
       },
-      iso: "LK",
+      iso: 'LK',
     },
     {
-      name: "Bridgetown, Barbados",
+      name: 'Bridgetown, Barbados',
       latlng: {
         lat: 13.0975,
         lng: -59.6167,
       },
-      iso: "BB",
+      iso: 'BB',
     },
     {
-      name: "Moroni, Comoros",
+      name: 'Moroni, Comoros',
       latlng: {
         lat: -11.7036,
         lng: 43.2536,
       },
-      iso: "KM",
+      iso: 'KM',
     },
     {
-      name: "Thimphu, Bhutan",
+      name: 'Thimphu, Bhutan',
       latlng: {
         lat: 27.4833,
         lng: 89.6333,
       },
-      iso: "BT",
+      iso: 'BT',
     },
     {
-      name: "Mbabane, Swaziland",
+      name: 'Mbabane, Swaziland',
       latlng: {
         lat: -26.3208,
         lng: 31.1617,
       },
-      iso: "SZ",
+      iso: 'SZ',
     },
     {
-      name: "Nouméa, New Caledonia",
+      name: 'Nouméa, New Caledonia',
       latlng: {
         lat: -22.2625,
         lng: 166.4443,
       },
-      iso: "NC",
+      iso: 'NC',
     },
     {
-      name: "Honiara, Solomon Islands",
+      name: 'Honiara, Solomon Islands',
       latlng: {
         lat: -9.4333,
         lng: 159.95,
       },
-      iso: "SB",
+      iso: 'SB',
     },
     {
-      name: "Suva, Fiji",
+      name: 'Suva, Fiji',
       latlng: {
         lat: -18.1333,
         lng: 178.4333,
       },
-      iso: "FJ",
+      iso: 'FJ',
     },
     {
-      name: "Ankara, Turkey",
+      name: 'Ankara, Turkey',
       latlng: {
         lat: 39.93,
         lng: 32.85,
       },
-      iso: "TR",
+      iso: 'TR',
     },
     {
-      name: "Castries, Saint Lucia",
+      name: 'Castries, Saint Lucia',
       latlng: {
         lat: 14.0167,
         lng: -60.9833,
       },
-      iso: "LC",
+      iso: 'LC',
     },
     {
-      name: "Cayenne, French Guiana",
+      name: 'Cayenne, French Guiana',
       latlng: {
         lat: 4.933,
         lng: -52.33,
       },
-      iso: "GF",
+      iso: 'GF',
     },
     {
-      name: "São Tomé, Sao Tome And Principe",
+      name: 'São Tomé, Sao Tome And Principe',
       latlng: {
         lat: 0.3333,
         lng: 6.7333,
       },
-      iso: "ST",
+      iso: 'ST',
     },
     {
-      name: "Port-Vila, Vanuatu",
+      name: 'Port-Vila, Vanuatu',
       latlng: {
         lat: -17.7333,
         lng: 168.3167,
       },
-      iso: "VU",
+      iso: 'VU',
     },
     {
-      name: "Hamilton, Bermuda",
+      name: 'Hamilton, Bermuda',
       latlng: {
         lat: 32.2942,
         lng: -64.7839,
       },
-      iso: "BM",
+      iso: 'BM',
     },
     {
-      name: "Bandar Seri Begawan, Brunei",
+      name: 'Bandar Seri Begawan, Brunei',
       latlng: {
         lat: 4.9167,
         lng: 114.9167,
       },
-      iso: "BN",
+      iso: 'BN',
     },
     {
-      name: "Monaco, Monaco",
+      name: 'Monaco, Monaco',
       latlng: {
         lat: 43.7396,
         lng: 7.4069,
       },
-      iso: "MC",
+      iso: 'MC',
     },
     {
-      name: "Gitega, Burundi",
+      name: 'Gitega, Burundi',
       latlng: {
         lat: -3.4283,
         lng: 29.925,
       },
-      iso: "BI",
+      iso: 'BI',
     },
     {
-      name: "Port of Spain, Trinidad And Tobago",
+      name: 'Port of Spain, Trinidad And Tobago',
       latlng: {
         lat: 10.6667,
         lng: -61.5167,
       },
-      iso: "TT",
+      iso: 'TT',
     },
     {
-      name: "Apia, Samoa",
+      name: 'Apia, Samoa',
       latlng: {
         lat: -13.8333,
         lng: -171.8333,
       },
-      iso: "WS",
+      iso: 'WS',
     },
     {
-      name: "Tarawa, Kiribati",
+      name: 'Tarawa, Kiribati',
       latlng: {
         lat: 1.3382,
         lng: 173.0176,
       },
-      iso: "KI",
+      iso: 'KI',
     },
     {
-      name: "Oranjestad, Aruba",
+      name: 'Oranjestad, Aruba',
       latlng: {
         lat: 12.5186,
         lng: -70.0358,
       },
-      iso: "AW",
+      iso: 'AW',
     },
     {
-      name: "Saint Helier, Jersey",
+      name: 'Saint Helier, Jersey',
       latlng: {
         lat: 49.1858,
         lng: -2.11,
       },
-      iso: "JE",
+      iso: 'JE',
     },
     {
-      name: "Banjul, The Gambia",
+      name: 'Banjul, The Gambia',
       latlng: {
         lat: 13.4531,
         lng: -16.5775,
       },
-      iso: "GM",
+      iso: 'GM',
     },
     {
-      name: "Mamoudzou, Mayotte",
+      name: 'Mamoudzou, Mayotte',
       latlng: {
         lat: -12.7871,
         lng: 45.275,
       },
-      iso: "YT",
+      iso: 'YT',
     },
     {
-      name: "Majuro, Marshall Islands",
+      name: 'Majuro, Marshall Islands',
       latlng: {
         lat: 7.0918,
         lng: 171.3802,
       },
-      iso: "MH",
+      iso: 'MH',
     },
     {
-      name: "Douglas, Isle Of Man",
+      name: 'Douglas, Isle Of Man',
       latlng: {
         lat: 54.15,
         lng: -4.4819,
       },
-      iso: "IM",
+      iso: 'IM',
     },
     {
-      name: "George Town, Cayman Islands",
+      name: 'George Town, Cayman Islands',
       latlng: {
         lat: 19.2866,
         lng: -81.3744,
       },
-      iso: "KY",
+      iso: 'KY',
     },
     {
-      name: "Victoria, Seychelles",
+      name: 'Victoria, Seychelles',
       latlng: {
         lat: -4.6236,
         lng: 55.4544,
       },
-      iso: "SC",
+      iso: 'SC',
     },
     {
-      name: "Kingstown, Saint Vincent And The Grenadines",
+      name: 'Kingstown, Saint Vincent And The Grenadines',
       latlng: {
         lat: 13.1667,
         lng: -61.2333,
       },
-      iso: "VC",
+      iso: 'VC',
     },
     {
-      name: "Andorra la Vella, Andorra",
+      name: 'Andorra la Vella, Andorra',
       latlng: {
         lat: 42.5,
         lng: 1.5,
       },
-      iso: "AD",
+      iso: 'AD',
     },
     {
-      name: "Saint John’s, Antigua And Barbuda",
+      name: 'Saint John’s, Antigua And Barbuda',
       latlng: {
         lat: 17.1211,
         lng: -61.8447,
       },
-      iso: "AG",
+      iso: 'AG',
     },
     {
-      name: "Nuku‘alofa, Tonga",
+      name: 'Nuku‘alofa, Tonga',
       latlng: {
         lat: -21.1347,
         lng: -175.2083,
       },
-      iso: "TO",
+      iso: 'TO',
     },
     {
-      name: "Ashgabat, Turkmenistan",
+      name: 'Ashgabat, Turkmenistan',
       latlng: {
         lat: 37.95,
         lng: 58.3833,
       },
-      iso: "TM",
+      iso: 'TM',
     },
     {
-      name: "Nuuk, Greenland",
+      name: 'Nuuk, Greenland',
       latlng: {
         lat: 64.175,
         lng: -51.7333,
       },
-      iso: "GL",
+      iso: 'GL',
     },
     {
-      name: "Belmopan, Belize",
+      name: 'Belmopan, Belize',
       latlng: {
         lat: 17.25,
         lng: -88.7675,
       },
-      iso: "BZ",
+      iso: 'BZ',
     },
     {
-      name: "Roseau, Dominica",
+      name: 'Roseau, Dominica',
       latlng: {
         lat: 15.3,
         lng: -61.3833,
       },
-      iso: "DM",
+      iso: 'DM',
     },
     {
-      name: "Basseterre, Saint Kitts And Nevis",
+      name: 'Basseterre, Saint Kitts And Nevis',
       latlng: {
         lat: 17.2983,
         lng: -62.7342,
       },
-      iso: "KN",
+      iso: 'KN',
     },
     {
-      name: "Tórshavn, Faroe Islands",
+      name: 'Tórshavn, Faroe Islands',
       latlng: {
         lat: 62,
         lng: -6.7833,
       },
-      iso: "FO",
+      iso: 'FO',
     },
     {
-      name: "Pago Pago, American Samoa",
+      name: 'Pago Pago, American Samoa',
       latlng: {
         lat: -14.274,
         lng: -170.7046,
       },
-      iso: "AS",
+      iso: 'AS',
     },
     {
-      name: "Valletta, Malta",
+      name: 'Valletta, Malta',
       latlng: {
         lat: 35.8978,
         lng: 14.5125,
       },
-      iso: "MT",
+      iso: 'MT',
     },
+    // {
+    //   name: 'Gaza, Gaza Strip',
+    //   latlng: {
+    //     lat: 31.5069,
+    //     lng: 34.456,
+    //   },
+    //   iso: 'XG',
+    // },
     {
-      name: "Gaza, Gaza Strip",
-      latlng: {
-        lat: 31.5069,
-        lng: 34.456,
-      },
-      iso: "XG",
-    },
-    {
-      name: "Grand Turk, Turks And Caicos Islands",
+      name: 'Grand Turk, Turks And Caicos Islands',
       latlng: {
         lat: 21.4664,
         lng: -71.136,
       },
-      iso: "TC",
+      iso: 'TC',
     },
     {
-      name: "Palikir, Federated States of Micronesia",
+      name: 'Palikir, Federated States of Micronesia',
       latlng: {
         lat: 6.9178,
         lng: 158.185,
       },
-      iso: "FM",
+      iso: 'FM',
     },
     {
-      name: "Funafuti, Tuvalu",
+      name: 'Funafuti, Tuvalu',
       latlng: {
         lat: -8.5243,
         lng: 179.1942,
       },
-      iso: "TV",
+      iso: 'TV',
     },
     {
-      name: "Vaduz, Liechtenstein",
+      name: 'Vaduz, Liechtenstein',
       latlng: {
         lat: 47.1397,
         lng: 9.5219,
       },
-      iso: "LI",
+      iso: 'LI',
     },
     {
-      name: "Lobamba, Swaziland",
+      name: 'Lobamba, Swaziland',
       latlng: {
         lat: -26.4465,
         lng: 31.2064,
       },
-      iso: "SZ",
+      iso: 'SZ',
     },
     {
-      name: "Avarua, Cook Islands",
+      name: 'Avarua, Cook Islands',
       latlng: {
         lat: -21.207,
         lng: -159.771,
       },
-      iso: "CK",
+      iso: 'CK',
     },
     {
-      name: "Saint George’s, Grenada",
+      name: 'Saint George’s, Grenada',
       latlng: {
         lat: 12.0444,
         lng: -61.7417,
       },
-      iso: "GD",
+      iso: 'GD',
     },
     {
-      name: "San Marino, San Marino",
+      name: 'San Marino, San Marino',
       latlng: {
         lat: 43.932,
         lng: 12.4484,
       },
-      iso: "SM",
+      iso: 'SM',
     },
     // {
     //   name: 'Al Quds, West Bank',
@@ -1809,212 +1810,212 @@ const game = {
     //   iso: 'XW',
     // },
     {
-      name: "Capitol Hill, Northern Mariana Islands",
+      name: 'Capitol Hill, Northern Mariana Islands',
       latlng: {
         lat: 15.2137,
         lng: 145.7546,
       },
-      iso: "MP",
+      iso: 'MP',
     },
     {
-      name: "Stanley, Falkland Islands (Islas Malvinas)",
+      name: 'Stanley, Falkland Islands (Islas Malvinas)',
       latlng: {
         lat: -51.7,
         lng: -57.85,
       },
-      iso: "FK",
+      iso: 'FK',
     },
     {
-      name: "Vatican City, Vatican City",
+      name: 'Vatican City, Vatican City',
       latlng: {
         lat: 41.9033,
         lng: 12.4534,
       },
-      iso: "VA",
+      iso: 'VA',
     },
     {
-      name: "Alofi, Niue",
+      name: 'Alofi, Niue',
       latlng: {
         lat: -19.056,
         lng: -169.921,
       },
-      iso: "NU",
+      iso: 'NU',
     },
     {
-      name: "Basse-Terre, Guadeloupe",
+      name: 'Basse-Terre, Guadeloupe',
       latlng: {
         lat: 16.0104,
         lng: -61.7055,
       },
-      iso: "GP",
+      iso: 'GP',
     },
     {
-      name: "Hagåtña, Guam",
+      name: 'Hagåtña, Guam',
       latlng: {
         lat: 13.4745,
         lng: 144.7504,
       },
-      iso: "GU",
+      iso: 'GU',
     },
     {
-      name: "Marigot, Saint Martin",
+      name: 'Marigot, Saint Martin',
       latlng: {
         lat: 18.0706,
         lng: -63.0847,
       },
-      iso: "MF",
+      iso: 'MF',
     },
     {
-      name: "Jamestown, Saint Helena, Ascension, And Tristan Da Cunha",
+      name: 'Jamestown, Saint Helena, Ascension, And Tristan Da Cunha',
       latlng: {
         lat: -15.9251,
         lng: -5.7179,
       },
-      iso: "SH",
+      iso: 'SH',
     },
     {
-      name: "Brades, Montserrat",
+      name: 'Brades, Montserrat',
       latlng: {
         lat: 16.7928,
         lng: -62.2106,
       },
-      iso: "MS",
+      iso: 'MS',
     },
     {
-      name: "Philipsburg, Sint Maarten",
+      name: 'Philipsburg, Sint Maarten',
       latlng: {
         lat: 18.0256,
         lng: -63.0492,
       },
-      iso: "SX",
+      iso: 'SX',
     },
     {
-      name: "Yaren, Nauru",
+      name: 'Yaren, Nauru',
       latlng: {
         lat: -0.5477,
         lng: 166.9209,
       },
-      iso: "NR",
+      iso: 'NR',
     },
     {
-      name: "Pristina, Kosovo",
+      name: 'Pristina, Kosovo',
       latlng: {
         lat: 42.6633,
         lng: 21.1622,
       },
-      iso: "XK",
+      iso: 'XK',
     },
     {
-      name: "Gustavia, Saint Barthelemy",
+      name: 'Gustavia, Saint Barthelemy',
       latlng: {
         lat: 17.8958,
         lng: -62.8508,
       },
-      iso: "BL",
+      iso: 'BL',
     },
     {
-      name: "Road Town, British Virgin Islands",
+      name: 'Road Town, British Virgin Islands',
       latlng: {
         lat: 18.4167,
         lng: -64.6167,
       },
-      iso: "VG",
+      iso: 'VG',
     },
     {
-      name: "Ngerulmud, Palau",
+      name: 'Ngerulmud, Palau',
       latlng: {
         lat: 7.5006,
         lng: 134.6242,
       },
-      iso: "PW",
+      iso: 'PW',
     },
     {
-      name: "Saint-Pierre, Saint Pierre And Miquelon",
+      name: 'Saint-Pierre, Saint Pierre And Miquelon',
       latlng: {
         lat: 46.7811,
         lng: -56.1764,
       },
-      iso: "PM",
+      iso: 'PM',
     },
     {
-      name: "The Valley, Anguilla",
+      name: 'The Valley, Anguilla',
       latlng: {
         lat: 18.2167,
         lng: -63.05,
       },
-      iso: "AI",
+      iso: 'AI',
     },
     {
-      name: "Mata-Utu, Wallis And Futuna",
+      name: 'Mata-Utu, Wallis And Futuna',
       latlng: {
         lat: -13.2825,
         lng: -176.1736,
       },
-      iso: "WF",
+      iso: 'WF',
     },
     {
-      name: "Kingston, Norfolk Island",
+      name: 'Kingston, Norfolk Island',
       latlng: {
         lat: -29.0569,
         lng: 167.9617,
       },
-      iso: "NF",
+      iso: 'NF',
     },
     {
-      name: "Longyearbyen, Svalbard",
+      name: 'Longyearbyen, Svalbard',
       latlng: {
         lat: 78.2167,
         lng: 15.6333,
       },
-      iso: "XR",
+      iso: 'XR',
     },
     {
-      name: "Tifariti, Morocco",
+      name: 'Tifariti, Morocco',
       latlng: {
         lat: 26.0928,
         lng: -10.6089,
       },
-      iso: "MA",
+      iso: 'MA',
     },
     {
-      name: "Adamstown, Pitcairn Islands",
+      name: 'Adamstown, Pitcairn Islands',
       latlng: {
         lat: -25.0667,
         lng: -130.0833,
       },
-      iso: "PN",
+      iso: 'PN',
     },
     {
-      name: "Flying Fish Cove, Christmas Island",
+      name: 'Flying Fish Cove, Christmas Island',
       latlng: {
         lat: -10.4167,
         lng: 105.7167,
       },
-      iso: "CX",
+      iso: 'CX',
     },
     {
-      name: "King Edward Point, South Georgia And South Sandwich Islands",
+      name: 'King Edward Point, South Georgia And South Sandwich Islands',
       latlng: {
         lat: -54.2833,
         lng: -36.5,
       },
-      iso: "GS",
+      iso: 'GS',
     },
     {
-      name: "San Juan, Puerto Rico",
+      name: 'San Juan, Puerto Rico',
       latlng: {
         lat: 18.4037,
         lng: -66.0636,
       },
-      iso: "PR",
+      iso: 'PR',
     },
     {
-      name: "Charlotte Amalie, U.S. Virgin Islands",
+      name: 'Charlotte Amalie, U.S. Virgin Islands',
       latlng: {
         lat: 18.3419,
         lng: -64.9332,
       },
-      iso: "VI",
+      iso: 'VI',
     },
   ],
   continents: [
@@ -4183,19 +4184,19 @@ function updateGameState(event) {
   } else {
     game.previousFlag = game.currentFlag;
     game.currentFlag = nextFlag;
-    let elem = document.getElementById("flag-img");
+    let elem = document.getElementById('flag-img');
     if (!elem) {
-      elem = document.createElement("img");
+      elem = document.createElement('img');
     }
-    elem.setAttribute("id", "flag-img");
+    elem.setAttribute('id', 'flag-img');
     elem.setAttribute(
-      "src",
+      'src',
       `https://flagcdn.com/128x96/${game.currentFlag.iso.toLowerCase()}.png`
     );
-    elem.setAttribute("width", "128");
-    elem.setAttribute("height", "96");
-    elem.setAttribute("alt", "Flag to guess");
-    document.getElementById("flag").appendChild(elem);
+    elem.setAttribute('width', '128');
+    elem.setAttribute('height', '96');
+    elem.setAttribute('alt', 'Flag to guess');
+    document.getElementById('flag').appendChild(elem);
   }
 
   if (event) {
@@ -4204,15 +4205,40 @@ function updateGameState(event) {
       game.currentLine.remove(map);
     }
     game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {
-      color: "red",
+      color: '#2a52be', // cerulean
+      weight: 0.5,
+      opacity: 50,
     }).addTo(map);
+    for (const marker of game.currentMarkers) {
+      marker.remove(map);
+    }
+    game.currentMarkers = [];
+    // guess marker
+    game.currentMarkers.push(
+      L.marker([event.latlng.lat, event.latlng.lng], {
+        icon: new L.DivIcon({
+          className: 'previous-guess-icon',
+          html: `<span class="previous-guess-span">Your Guess</span>`,
+        }),
+      }).addTo(map)
+    );
+    // answer marker
+    game.currentMarkers.push(
+      L.marker([game.previousFlag.latlng.lat, game.previousFlag.latlng.lng], {
+        icon: new L.DivIcon({
+          className: 'previous-answer-icon',
+          html: `<span class="previous-answer-span">${game.previousFlag.name}</span>`,
+        }),
+        title: game.previousFlag.name,
+      }).addTo(map)
+    );
     game.score = round(game.score + distance);
     game.rounds++;
     document.getElementById(
-      "guess"
+      'guess'
     ).innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
-    document.getElementById("rounds").innerText = `rounds: ${game.rounds}`;
-    document.getElementById("score").innerText = `score: ${game.score}`;
+    document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
+    document.getElementById('score').innerText = `score: ${game.score}`;
   }
 }
 
@@ -4222,7 +4248,7 @@ function updateGameState(event) {
 //start with all the flags
 game.flags = game.allFlags;
 populateContinents();
-map.on("click", updateGameState);
+map.on('click', updateGameState);
 
 // let's get started!
 game.currentFlag = popRandomFlag();

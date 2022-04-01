@@ -1,4 +1,6 @@
-html, body, #container {
+html,
+body,
+#container {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -14,11 +16,37 @@ html, body, #container {
   margin: auto;
 }
 
-#guess, #rounds, #score {
+#guess,
+#rounds,
+#score {
   color: white;
 }
 
 #flag {
   float: left;
   margin-right: 5px;
+}
+
+.previous-guess-icon {
+  height: 50px;
+  width: 50px;
+  background-color: #2a52be;
+  border-color: #000000;
+  border-radius: 50%;
+  opacity: 50%;
+  display: inline-block;
+  font-size: larger;
+  font-weight: bolder;
+}
+
+.previous-answer-icon {
+  height: 100px;
+  width: 100px;
+  background-color: #2a52be;
+  border-color: #000000;
+  border-radius: 50%;
+  opacity: 50%;
+  display: inline-block;
+  font-size: larger;
+  font-weight: bolder;
 }

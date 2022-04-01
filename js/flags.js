@@ -1943,14 +1943,14 @@ const flags = [
     },
     iso: 'XR',
   },
-  {
-    name: 'Tifariti, Morocco',
-    latlng: {
-      lat: 26.0928,
-      lng: -10.6089,
-    },
-    iso: 'MA',
-  },
+  // {
+  //   name: 'Tifariti, Morocco',
+  //   latlng: {
+  //     lat: 26.0928,
+  //     lng: -10.6089,
+  //   },
+  //   iso: 'MA',
+  // },
   {
     name: 'Adamstown, Pitcairn Islands',
     latlng: {

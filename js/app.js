@@ -18,9 +18,18 @@ const game = {
   previousFlag: undefined,
   currentLine: undefined,
   currentMarkers: [],
+  guesses: [],
   rounds: 0,
-  score: 0,
+  score: {
+    total: 0,
+    last: 0,
+    best: 0,
+    worst: 0,
+    avg: 0,
+  },
   flags,
+  pause: false,
+  roundStartedAt: undefined,
 };
 
 ///////////////////////////////////
@@ -48,6 +57,33 @@ function round(input) {
   return Math.round(input * 100) / 100;
 }
 
+function calculateScore(distance) {
+  let score = 0;
+  if (distance > 1000) {
+    return score;
+  }
+
+  // check if the guess was < 5 seconds
+  if (new Date() - game.roundStartedAt < 5 * 1000) {
+    score += 1000; // bonus points for fast guesses
+  }
+
+  if (distance > 500) {
+    // e.g. 999 = 1, 501 = 499 (for the second part)
+    return score + 1000 - Math.round(distance);
+  } else if (distance < 500 && distance >= 400) {
+    return score + 500;
+  } else if (distance < 400 && distance >= 300) {
+    return score + 750;
+  } else if (distance < 300 && distance >= 200) {
+    return score + 1000;
+  } else if (distance < 220 && distance >= 100) {
+    return score + 1500;
+  } else {
+    return score + 2000;
+  }
+}
+
 function toRad(input) {
   return (input * Math.PI) / 180;
 }
@@ -73,12 +109,20 @@ function popRandomFlag() {
 }
 
 function endGame() {
+  // Bonus points for lots of guesses in the time allowed
+  if (game.guesses > 50) {
+    game.score += 10000;
+  }
+
   // Do this on the next event loop tick
   setTimeout(() => {
     const summary = `
 G A M E O V E R
 rounds: ${game.rounds}
-score: ${game.score}
+score: ${game.score.total}
+
+guesses:
+${game.guesses.map((g) => `${g.name}: ${g.score} (${g.distance} km)`).join('\n')}
 
 good job!
  `;
@@ -89,27 +133,31 @@ good job!
   }, 0);
 }
 
-function updateGameState(event) {
+function attemptNextFlag() {
   // move on to the next flag
-  const nextFlag = popRandomFlag();
-  if (!nextFlag) {
+  game.currentFlag = popRandomFlag();
+  if (!game.currentFlag) {
     endGame();
   } else {
     game.previousFlag = game.currentFlag;
-    game.currentFlag = nextFlag;
     let elem = document.getElementById('flag-img');
     if (!elem) {
       elem = document.createElement('img');
     }
     elem.setAttribute('id', 'flag-img');
-    elem.setAttribute('src', `https://flagcdn.com/128x96/${game.currentFlag.iso.toLowerCase()}.png`);
-    elem.setAttribute('width', '128');
-    elem.setAttribute('height', '96');
+    elem.setAttribute('src', `https://flagcdn.com/224x168/${game.currentFlag.iso.toLowerCase()}.png`);
+    elem.setAttribute('width', '224');
+    elem.setAttribute('height', '168');
     elem.setAttribute('alt', 'Flag to guess');
     document.getElementById('flag').appendChild(elem);
   }
+}
 
+function updateGameState(event) {
   if (event) {
+    // pause the game until the "next" button is pressed
+    game.pause = true;
+    document.getElementById('next-button').disabled = false;
     const distance = round(haversine(event.latlng, game.previousFlag.latlng));
     if (game.currentLine) {
       game.currentLine.remove(map);
@@ -142,11 +190,28 @@ function updateGameState(event) {
         title: game.previousFlag.name,
       }).addTo(map)
     );
-    game.score = round(game.score + distance);
+    game.score.last = calculateScore(distance);
+    game.score.total += game.score.last;
+    game.guesses.push({
+      name: game.previousFlag.name,
+      distance,
+      score: game.score.last,
+    });
     game.rounds++;
     document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
     document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
-    document.getElementById('score').innerText = `score: ${game.score}`;
+    document.getElementById('total-score').innerText = `score: ${game.score.total}`;
+    document.getElementById('last-score').innerText = `last score: ${game.score.last}`;
+    if (game.score.last > game.score.best) {
+      game.score.best = game.score.last;
+    }
+    document.getElementById('best-score').innerText = `best score: ${game.score.best}`;
+    if (game.score.last < game.score.worst) {
+      game.score.worst = game.score.last;
+    }
+    document.getElementById('worst-score').innerText = `worst score: ${game.score.worst}`;
+    game.score.avg = round(game.guesses.reduce((acc, guess) => acc + guess.score, 0) / game.guesses.length);
+    document.getElementById('avg-score').innerText = `avg score: ${game.score.avg}`;
   }
 }
 
@@ -154,18 +219,39 @@ function updateGameState(event) {
 // setup the game //
 ////////////////////
 map.on('click', updateGameState);
+const nextButton = document.getElementById('next-button');
+nextButton.addEventListener('click', function () {
+  nextButton.disabled = true;
+  game.pause = false;
+  game.roundStartedAt = new Date();
+  attemptNextFlag();
+});
+
+alert(`
+To play the game, click as close as possible to the capital city of the country whose flag is displayed.
+
+Your score is calculated based on how close you are, as long as your guess is within 1000 km. Bonus points for guessing quickly.
+
+You have 2 minutes. Click OK to start the game. Good luck!
+`);
 
 // start the timer
-let seconds_left = 2 * 60; // 2 minutes
+let secondsLeft = 2 * 60; // 2 minutes
+// let secondsLeft = 30; // 2 minutes
 const gameTimerInterval = setInterval(function () {
-  seconds_left -= 1;
-  document.getElementById('game-timer').innerHTML = `time left: ${seconds_left} seconds`;
+  if (!game.pause) {
+    secondsLeft -= 1;
+    document.getElementById('game-timer').innerHTML = `time left: ${secondsLeft} seconds`;
 
-  if (seconds_left <= 0) {
-    clearInterval(gameTimerInterval);
-    endGame();
+    if (secondsLeft <= 0) {
+      clearInterval(gameTimerInterval);
+      endGame();
+    }
   }
 }, 1000);
 
 // let's get started!
+attemptNextFlag();
 updateGameState();
+const navbar = document.getElementById('navbar');
+navbar.style.display = 'block';

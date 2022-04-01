@@ -4,7 +4,7 @@
 // initialize our map
 const map = L.map('map', {
   center: [41, -69], // center map to the waters off beautiful Nauset
-  zoom: 3, // set the zoom level
+  zoom: 6, // set the zoom level
 });
 // add a baselayer to the map
 const OpenStreetMap = L.tileLayer(
@@ -20,6 +20,7 @@ const game = {
   currentFlag: undefined,
   previousFlag: undefined,
   currentLine: undefined,
+  currentMarker: undefined,
   rounds: 0,
   score: 0,
   flags: [
@@ -2119,8 +2120,22 @@ function updateGameState(event) {
       game.currentLine.remove(map);
     }
     game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {
-      color: 'red',
+      color: '#2a52be', // cerulean
+      weight: 0.3,
     }).addTo(map);
+    if (game.currentMarker) {
+      game.currentMarker.remove(map);
+    }
+    game.currentMarker = L.marker(
+      [game.previousFlag.latlng.lat, game.previousFlag.latlng.lng],
+      {
+        icon: new L.DivIcon({
+          className: 'previous-guess-icon',
+          html: `<span class="previous-guess-span">${game.previousFlag.name}</span>`,
+        }),
+        title: game.previousFlag.name,
+      }
+    ).addTo(map);
     game.score = round(game.score + distance);
     game.rounds++;
     document.getElementById(

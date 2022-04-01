@@ -28,9 +28,9 @@ body,
 }
 
 .previous-guess-icon {
-  height: 50px;
-  width: 50px;
-  background-color: #2a52be;
+  height: 10px;
+  width: 10px;
+  background-color: #d5ad41;
   border-color: #000000;
   border-radius: 50%;
   opacity: 50%;
@@ -40,8 +40,8 @@ body,
 }
 
 .previous-answer-icon {
-  height: 100px;
-  width: 100px;
+  height: 10px;
+  width: 10px;
   background-color: #2a52be;
   border-color: #000000;
   border-radius: 50%;

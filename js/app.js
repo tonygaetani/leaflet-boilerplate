@@ -234,7 +234,9 @@ To play the game, click as close as possible to the capital city of the country 
 
 Your score is calculated based on how close you are, as long as your guess is within 1000 km. Bonus points for guessing quickly.
 
-You have 2 minutes. Click OK to start the game. Good luck!
+You have 2 minutes of guessing time. The clock stops between each guess until you hit the "next" button.
+
+Click OK to start the game. Good luck!
 `);
 
 // start the timer

@@ -151,9 +151,9 @@ function attemptNextFlag() {
       elem = document.createElement('img');
     }
     elem.setAttribute('id', 'flag-img');
-    elem.setAttribute('src', `https://flagcdn.com/224x168/${game.currentFlag.iso.toLowerCase()}.png`);
-    elem.setAttribute('width', '224');
-    elem.setAttribute('height', '168');
+    elem.setAttribute('src', `https://flagcdn.com/256x192/${game.currentFlag.iso.toLowerCase()}.png`);
+    elem.setAttribute('width', '256');
+    elem.setAttribute('height', '192');
     elem.setAttribute('alt', 'Flag to guess');
     document.getElementById('flag').appendChild(elem);
   }

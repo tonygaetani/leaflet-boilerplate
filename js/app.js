@@ -109,6 +109,11 @@ function popRandomFlag() {
   return game.flags.pop();
 }
 
+const emoji = new EmojiConvertor();
+function getFlagEmoji(flag) {
+  return emoji.replace_colons(`:flag-${flag.iso.toLowerCase()}:`);
+}
+
 function endGame() {
   // Bonus points for lots of guesses in the time allowed
   if (game.guesses.length > 50) {
@@ -123,7 +128,7 @@ rounds: ${game.rounds}
 score: ${game.score.total}
 
 guesses:
-${game.guesses.map((g) => `${g.name}: ${g.score} (${g.distance} km)`).join('\n')}
+${game.guesses.map((g) => `${getFlagEmoji(g.flag)} ${g.flag.name}: ${g.score} (${g.distance} km)`).join('\n')}
 
 good job!
  `;
@@ -195,7 +200,7 @@ function updateGameState(event) {
     game.score.last = calculateScore(distance);
     game.score.total += game.score.last;
     game.guesses.push({
-      name: game.previousFlag.name,
+      flag: game.previousFlag,
       distance,
       score: game.score.last,
     });
@@ -241,7 +246,6 @@ Click OK to start the game. Good luck!
 
 // start the timer
 let secondsLeft = 2 * 60; // 2 minutes
-// let secondsLeft = 30; // 2 minutes
 const gameTimerInterval = setInterval(function () {
   if (!game.pause) {
     secondsLeft -= 1;

@@ -4,6 +4,7 @@ body,
   height: 100%;
   width: 100%;
   overflow: hidden;
+  background-color: #222;
 }
 
 /*this is important to give the map a height*/
@@ -47,4 +48,13 @@ body,
   display: inline-block;
   font-size: larger;
   font-weight: bolder;
+}
+
+#start-end-game {
+  width: 350px;
+  color: #ffffff;
+}
+
+#results {
+  font-weight: bold;
 }

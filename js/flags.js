@@ -1935,14 +1935,14 @@ const flags = [
     },
     iso: 'NF',
   },
-  {
-    name: 'Longyearbyen, Svalbard',
-    latlng: {
-      lat: 78.2167,
-      lng: 15.6333,
-    },
-    iso: 'XR',
-  },
+  // {
+  //   name: 'Longyearbyen, Svalbard',
+  //   latlng: {
+  //     lat: 78.2167,
+  //     lng: 15.6333,
+  //   },
+  //   iso: 'XR',
+  // },
   // {
   //   name: 'Tifariti, Morocco',
   //   latlng: {

@@ -122,20 +122,19 @@ function endGame() {
 
   // Do this on the next event loop tick
   setTimeout(() => {
-    const summary = `
-G A M E O V E R
-rounds: ${game.rounds}
-score: ${game.score.total}
-
-guesses:
-${game.guesses.map((g) => `${getFlagEmoji(g.flag)} ${g.flag.name}: ${g.score} (${g.distance} km)`).join('\n')}
-
-good job!
- `;
-    if (alert(summary)) {
-    } else {
-      window.location.reload();
-    }
+    document.body.innerHTML = `
+<div id="start-end-game">
+  <marquee>G A M E O V E R</marquee>
+  <div class="results">rounds: ${game.rounds}</div>
+  <div class="results">score: ${game.score.total}</div>
+  <div class="results">guesses:</div>
+  ${game.guesses
+    .map((g) => `<div>${getFlagEmoji(g.flag)} ${g.flag.name}: ${g.score} (${g.distance} km)</div>`)
+    .join('')}
+</div>
+<p />
+<button onClick="window.location.reload();">start over</button>
+`;
   }, 0);
 }
 
@@ -225,6 +224,34 @@ function updateGameState(event) {
 ////////////////////
 // setup the game //
 ////////////////////
+function startGame() {
+  // start the timer
+  // let secondsLeft = 2 * 60; // 2 minutes
+  let secondsLeft = 10;
+  const gameTimerInterval = setInterval(function () {
+    if (!game.pause) {
+      secondsLeft -= 1;
+      document.getElementById('game-timer').innerHTML = `time left: ${secondsLeft} seconds`;
+
+      if (secondsLeft <= 0) {
+        clearInterval(gameTimerInterval);
+        endGame();
+      }
+    }
+  }, 1000);
+
+  // let's get started!
+  attemptNextFlag();
+  updateGameState();
+  const navbar = document.getElementById('navbar');
+  navbar.style.display = 'block';
+  const mapDiv = document.getElementById('map');
+  mapDiv.style.display = 'block';
+  map.invalidateSize();
+  document.getElementById('start-end-game').style.display = 'none';
+}
+
+// register event listeners
 map.on('click', updateGameState);
 const nextButton = document.getElementById('next-button');
 nextButton.addEventListener('click', function () {
@@ -233,33 +260,3 @@ nextButton.addEventListener('click', function () {
   game.roundStartedAt = new Date();
   attemptNextFlag();
 });
-
-alert(`
-To play the game, click as close as possible to the capital city of the country whose flag is displayed.
-
-Your score is calculated based on how close you are, as long as your guess is within 1000 km. Bonus points for guessing quickly.
-
-You have 2 minutes of guessing time. The clock stops between each guess until you hit the "next" button.
-
-Click OK to start the game. Good luck!
-`);
-
-// start the timer
-let secondsLeft = 2 * 60; // 2 minutes
-const gameTimerInterval = setInterval(function () {
-  if (!game.pause) {
-    secondsLeft -= 1;
-    document.getElementById('game-timer').innerHTML = `time left: ${secondsLeft} seconds`;
-
-    if (secondsLeft <= 0) {
-      clearInterval(gameTimerInterval);
-      endGame();
-    }
-  }
-}, 1000);
-
-// let's get started!
-attemptNextFlag();
-updateGameState();
-const navbar = document.getElementById('navbar');
-navbar.style.display = 'block';

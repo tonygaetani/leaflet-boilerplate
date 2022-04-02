@@ -32,14 +32,30 @@
         <div id="game-timer" class="display-value">time left: 120 seconds</div>
         <button id="next-button" disabled="true">next</button>
     </div>
+    <div id="start-end-game">
+        <marquee>F L A G G A M E</marquee>
+        <div class="preamble">To play the game, click as close as possible to the capital city of the country whose
+            flag is displayed.</div>
+        <p />
+        <div class="preamble">Your score is calculated based on how close you are, as long as your guess is within
+            1000 km. Bonus points for guessing quickly.</div>
+        <p />
+        <div class="preamble">You have 2 minutes of guessing time. The clock stops between each guess until you hit
+            the "next" button.</div>
+        <p />
+        <div class="preamble">Click the button to start the game. Good luck!</div>
+        <p />
+    </div>
+    <button onClick="startGame();">start game</button>
     <div id="container">
         <!-- the map will go inside this div below -->
-        <div id="map"></div>
+        <div id="map" style="display: none"></div>
         <!-- link to the js files -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
         <script src="js/flags.js"></script>
         <script src="js/emoji.js"></script>
         <script src="js/app.js"></script>
+    </div>
 </body>
 
 </html>

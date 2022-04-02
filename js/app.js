@@ -111,7 +111,7 @@ function popRandomFlag() {
 
 function endGame() {
   // Bonus points for lots of guesses in the time allowed
-  if (game.guesses > 50) {
+  if (game.guesses.length > 50) {
     game.score += 10000;
   }
 

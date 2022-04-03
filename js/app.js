@@ -110,6 +110,8 @@ function popRandomFlag() {
 }
 
 const emoji = new EmojiConvertor();
+emoji.replace_mode = 'unified';
+emoji.allow_native = true;
 function getFlagEmoji(flag) {
   return emoji.replace_colons(`:flag-${flag.iso.toLowerCase()}:`);
 }

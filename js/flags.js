@@ -1831,14 +1831,14 @@ const flags = [
     },
     iso: 'GU',
   },
-  {
-    name: 'Marigot, Saint Martin',
-    latlng: {
-      lat: 18.0706,
-      lng: -63.0847,
-    },
-    iso: 'MF',
-  },
+  // {
+  //   name: 'Marigot, Saint Martin',
+  //   latlng: {
+  //     lat: 18.0706,
+  //     lng: -63.0847,
+  //   },
+  //   iso: 'MF',
+  // },
   {
     name: 'Jamestown, Saint Helena, Ascension, And Tristan Da Cunha',
     latlng: {

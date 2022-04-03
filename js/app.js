@@ -65,8 +65,9 @@ function calculateScore(distance) {
   }
 
   // check if the guess was < 5 seconds
-  if (new Date() - game.roundStartedAt < 5 * 1000) {
-    score += 1000; // bonus points for fast guesses
+  const guessDuration = new Date() - game.roundStartedAt;
+  if (guessDuration < 5 * 1000) {
+    score += (5000 - guessDuration) * 2; // bonus points for fast guesses
   }
 
   if (distance > 500) {
@@ -112,14 +113,14 @@ function popRandomFlag() {
 const emoji = new EmojiConvertor();
 emoji.replace_mode = 'unified';
 emoji.allow_native = true;
-function getFlagEmoji(flag) {
-  return emoji.replace_colons(`:flag-${flag.iso.toLowerCase()}:`);
+function getFlagEmoji(iso) {
+  return emoji.replace_colons(`:flag-${iso.toLowerCase()}:`);
 }
 
 function endGame() {
   // Bonus points for lots of guesses in the time allowed
   if (game.guesses.length > 50) {
-    game.score += 10000;
+    game.score += 25000;
   }
 
   // Do this on the next event loop tick
@@ -131,7 +132,7 @@ function endGame() {
   <div class="results">score: ${game.score.total}</div>
   <div class="results">guesses:</div>
   ${game.guesses
-    .map((g) => `<div>${getFlagEmoji(g.flag)} ${g.flag.name}: ${g.score} (${g.distance} km)</div>`)
+    .map((g) => `<div>${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`)
     .join('')}
 </div>
 <p />
@@ -166,19 +167,20 @@ function updateGameState(event) {
     // pause the game until the "next" button is pressed
     game.pause = true;
     document.getElementById('next-button').disabled = false;
-    const distance = round(haversine(event.latlng, game.previousFlag.latlng));
-    if (game.currentLine) {
-      game.currentLine.remove(map);
+    let distance = Number.POSITIVE_INFINITY;
+    let capital = undefined;
+    for (const capitalToCheck of game.previousFlag.capitals) {
+      const distanceFromCapital = round(haversine(event.latlng, capitalToCheck.latlng));
+      if (distanceFromCapital < distance) {
+        distance = distanceFromCapital;
+        capital = capitalToCheck;
+      }
     }
-    game.currentLine = L.polyline([event.latlng, game.previousFlag.latlng], {
+    game.currentLine = L.polyline([event.latlng, capital.latlng], {
       color: '#007BA7', // cerulean
       weight: 0.5,
       opacity: 50,
     }).addTo(map);
-    for (const marker of game.currentMarkers) {
-      marker.remove(map);
-    }
-    game.currentMarkers = [];
     // guess marker
     game.currentMarkers.push(
       L.marker([event.latlng.lat, event.latlng.lng], {
@@ -190,23 +192,23 @@ function updateGameState(event) {
     );
     // answer marker
     game.currentMarkers.push(
-      L.marker([game.previousFlag.latlng.lat, game.previousFlag.latlng.lng], {
+      L.marker([capital.latlng.lat, capital.latlng.lng], {
         icon: new L.DivIcon({
           className: 'previous-answer-icon',
-          html: `<span class="previous-answer-span">${game.previousFlag.name}</span>`,
+          html: `<span class="previous-answer-span">${capital.name}</span>`,
         }),
-        title: game.previousFlag.name,
       }).addTo(map)
     );
     game.score.last = calculateScore(distance);
     game.score.total += game.score.last;
     game.guesses.push({
-      flag: game.previousFlag,
+      iso: game.previousFlag.iso,
+      capital,
       distance,
       score: game.score.last,
     });
     game.rounds++;
-    document.getElementById('guess').innerText = `You were ${distance} km away from ${game.previousFlag.name}`;
+    document.getElementById('guess').innerText = `You were ${distance} km away from ${capital.name}`;
     document.getElementById('rounds').innerText = `rounds: ${game.rounds}`;
     document.getElementById('total-score').innerText = `score: ${game.score.total}`;
     document.getElementById('last-score').innerText = `last score: ${game.score.last}`;
@@ -228,7 +230,8 @@ function updateGameState(event) {
 ////////////////////
 function startGame() {
   // start the timer
-  let secondsLeft = 2 * 60; // 2 minutes
+  // let secondsLeft = 2 * 60; // 2 minutes
+  let secondsLeft = 25; // 2 minutes
   const gameTimerInterval = setInterval(function () {
     if (!game.pause) {
       secondsLeft -= 1;
@@ -259,5 +262,12 @@ nextButton.addEventListener('click', function () {
   nextButton.disabled = true;
   game.pause = false;
   game.roundStartedAt = new Date();
+  for (const marker of game.currentMarkers) {
+    marker.remove(map);
+  }
+  game.currentMarkers = [];
+  if (game.currentLine) {
+    game.currentLine.remove(map);
+  }
   attemptNextFlag();
 });

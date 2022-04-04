@@ -225,6 +225,7 @@ function updateGameState(event) {
     if (game.score.last < game.score.worst) {
       game.score.worst = game.score.last;
     }
+    game.score.avg = round(game.guesses.reduce((acc, guess) => acc + guess.score, 0) / game.guesses.length);
   }
 }
 

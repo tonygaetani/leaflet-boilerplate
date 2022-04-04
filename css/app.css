@@ -7,6 +7,11 @@ body,
   background-color: #222;
 }
 
+hr {
+  padding: 0px;
+  margin: 0px;
+}
+
 /*this is important to give the map a height*/
 #map {
   width: auto;
@@ -19,6 +24,10 @@ body,
 
 .display-value {
   color: white;
+}
+
+.bonus {
+  font-weight: bolder;
 }
 
 #flag {
@@ -53,8 +62,4 @@ body,
 #start-end-game {
   width: 350px;
   color: #ffffff;
-}
-
-#results {
-  font-weight: bold;
 }

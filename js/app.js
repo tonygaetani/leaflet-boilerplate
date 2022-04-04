@@ -119,8 +119,10 @@ function getFlagEmoji(iso) {
 
 function endGame() {
   // Bonus points for lots of guesses in the time allowed
-  if (game.guesses.length > 50) {
+  let bonus = ``;
+  if (game.guesses.length > 35) {
     game.score += 25000;
+    bonus = '<div id="bonus" class="display-value bonus">BONUS POINTS: 25000</div>';
   }
 
   // Do this on the next event loop tick
@@ -128,8 +130,12 @@ function endGame() {
     document.body.innerHTML = `
 <div id="start-end-game">
   <marquee>G A M E O V E R</marquee>
-  <div class="results">rounds: ${game.rounds}</div>
-  <div class="results">score: ${game.score.total}</div>
+  <div id="results" class="display-value">rounds: ${game.rounds}</div>
+  <div id="score" class="display-value">score: ${game.score.total}</div>
+  ${bonus}
+  <div id="best-score" class="display-value">best score: ${game.score.best}</div>
+  <div id="worst-score" class="display-value">worst score: ${game.score.worst}</div>
+  <div id="avg-score" class="display-value">avg score: ${game.score.avg}</div>
   <div class="results">guesses:</div>
   ${game.guesses
     .map((g) => `<div>${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`)
@@ -219,9 +225,6 @@ function updateGameState(event) {
     if (game.score.last < game.score.worst) {
       game.score.worst = game.score.last;
     }
-    document.getElementById('worst-score').innerText = `worst score: ${game.score.worst}`;
-    game.score.avg = round(game.guesses.reduce((acc, guess) => acc + guess.score, 0) / game.guesses.length);
-    document.getElementById('avg-score').innerText = `avg score: ${game.score.avg}`;
   }
 }
 

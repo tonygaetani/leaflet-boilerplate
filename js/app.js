@@ -8,7 +8,7 @@ const map = L.map('map', {
   worldCopyJump: true,
 });
 // add a baselayer to the map
-const OpenStreetMap = L.tileLayer('http://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+const OpenStreetMap = L.tileLayer('https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution:
     '&copy; <a href="https://raw.githubusercontent.com/CartoDB/basemap-styles/master/LICENSE.md">Carto CDN</a>',

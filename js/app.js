@@ -241,7 +241,7 @@ function startGame() {
   const gameTimerInterval = setInterval(function () {
     if (!game.pause) {
       secondsLeft -= 1;
-      document.getElementById('game-timer').innerHTML = `time left: ${secondsLeft} seconds`;
+      document.getElementById('game-timer').innerHTML = `Time left: ${secondsLeft} seconds`;
 
       if (secondsLeft <= 0) {
         clearInterval(gameTimerInterval);

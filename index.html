@@ -8,7 +8,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-TZB180BXE8');
     </script>
     <meta charset="utf-8">
@@ -30,32 +29,34 @@
 <body>
     <!-- navbar starts hidden -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar" style="display: none">
-        <div id="flag"></div>
-        <div id="guess" class="display-value">Click as close as possible to the capital city of the country whose
-            flag is displayed.</div>
-        <hr />
-        <div id="rounds" class="display-value">rounds: 0</div>
-        <div id="total-score" class="display-value">score: 0</div>
-        <div id="last-score" class="display-value">last score: 0</div>
-        <div id="best-score" class="display-value">best score: 0</div>
-        <div id="game-timer" class="display-value">time left: 120 seconds</div>
-        <button id="next-button" disabled="true">next</button>
+        <div class="col-xs-4">
+            <div id="flag"></div>
+        </div>
+        <div class="col-xs-8">
+            <div id="guess" class="display-value h5">Click as close as possible to the capital city of the flag's
+                country.
+            </div>
+            <div id="total-score" class="display-value h5">Score: 0</div>
+            <div id="last-score" class="display-value h5">Last score: 0</div>
+            <div id="game-timer" class="display-value h5">Time left: 120 seconds</div>
+            <button class="btn btn-default" id="next-button" disabled="true">Next</button>
+        </div>
     </div>
     <div id="start-end-game">
-        <marquee>F L A G G A M E</marquee>
-        <div class="preamble">To play the game, click as close as possible to the capital city of the country whose
+        <marquee class="h3">F L A G G A M E</marquee>
+        <div class="preamble h5">To play the game, click as close as possible to the capital city of the country whose
             flag is displayed.</div>
         <p />
-        <div class="preamble">Your score is calculated based on how close you are, as long as your guess is within
+        <div class="preamble h5">Your score is calculated based on how close you are, as long as your guess is within
             1000 km. Bonus points for guessing quickly.</div>
         <p />
-        <div class="preamble">You have 2 minutes of guessing time. The clock stops between each guess until you hit
+        <div class="preamble h5">You have 2 minutes of guessing time. The clock stops between each guess until you hit
             the "next" button.</div>
         <p />
-        <div class="preamble">Click the button to start the game. Good luck!</div>
+        <div class="preamble h5">Click the button to start the game. Good luck!</div>
         <p />
+        <button class="btn btn-default btn-lg" onClick="startGame();">Start</button>
     </div>
-    <button onClick="startGame();">start game</button>
     <div id="container">
         <!-- the map will go inside this div below -->
         <div id="map" style="display: none"></div>

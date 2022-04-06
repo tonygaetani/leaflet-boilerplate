@@ -7,11 +7,6 @@ body,
   background-color: #222;
 }
 
-hr {
-  padding: 0px;
-  margin: 0px;
-}
-
 /*this is important to give the map a height*/
 #map {
   width: auto;
@@ -20,6 +15,8 @@ hr {
 
 #navbar {
   margin: auto;
+  min-width: 375px;
+  max-width: 800px;
 }
 
 .display-value {
@@ -62,4 +59,5 @@ hr {
 #start-end-game {
   width: 350px;
   color: #ffffff;
+  margin-left: 5px;
 }

@@ -2913,10 +2913,3 @@ const flags = [
     iso: 'VI',
   },
 ];
-
-const results = {};
-for (const flag of flags) {
-  results[flag.iso] = (results[flag.iso] || []).concat(flag);
-}
-
-console.log(Object.values(results).filter((r) => r.length > 1));

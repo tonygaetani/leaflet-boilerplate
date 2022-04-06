@@ -135,7 +135,7 @@ function endGame() {
   <div id="score" class="display-value h5">Total score: ${game.score.total}</div>
   ${bonus}
   <div id="best-score" class="display-value h5">Best score: ${game.score.best}</div>
-  <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
+  <div id="worst-score" class="display-value h5">Worst score: ${game.score.worst}</div>
   <div id="avg-score" class="display-value h5">Average score: ${game.score.avg}</div>
   <div class="results h5">guesses:</div>
   ${game.guesses
@@ -237,7 +237,7 @@ function updateGameState(event) {
 ////////////////////
 function startGame() {
   // start the timer
-  let secondsLeft = 2 * 60; // 2 minutes
+  let secondsLeft = 10; // 2 minutes
   const gameTimerInterval = setInterval(function () {
     if (!game.pause) {
       secondsLeft -= 1;

@@ -15,8 +15,7 @@ body,
 
 #navbar {
   margin: auto;
-  min-width: 375px;
-  max-width: 800px;
+  max-width: 375px;
 }
 
 .display-value {
@@ -29,7 +28,7 @@ body,
 
 #flag {
   float: left;
-  margin-right: 5px;
+  margin-left: 48px;
 }
 
 .previous-guess-icon {

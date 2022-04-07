@@ -131,17 +131,17 @@ function endGame() {
     document.body.innerHTML = `
 <div id="start-end-game">
   <marquee class="h3">G A M E O V E R</marquee>
-  <div id="results" class="display-value h5">Rounds: ${game.rounds}</div>
-  <div id="score" class="display-value h5">Total score: ${game.score.total}</div>
+  <div id="results" class="display-value h6">Rounds: ${game.rounds}</div>
+  <div id="score" class="display-value h6">Total score: ${game.score.total}</div>
   ${bonus}
-  <div id="best-score" class="display-value h5">Best score: ${game.score.best}</div>
-  <div id="worst-score" class="display-value h5">Worst score: ${game.score.worst}</div>
-  <div id="avg-score" class="display-value h5">Average score: ${game.score.avg}</div>
-  <div class="results h5">guesses:</div>
+  <div id="best-score" class="display-value h6">Best score: ${game.score.best}</div>
+  <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
+  <div id="avg-score" class="display-value h6">Average score: ${game.score.avg}</div>
+  <div class="results h6">guesses:</div>
   ${game.guesses
     .map(
       (g) =>
-        `<div class="display-value h5">${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`
+        `<div class="display-value h6">${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`
     )
     .join('')}
 </div>

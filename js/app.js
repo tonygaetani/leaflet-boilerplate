@@ -237,7 +237,7 @@ function updateGameState(event) {
 ////////////////////
 function startGame() {
   // start the timer
-  let secondsLeft = 10; // 2 minutes
+  let secondsLeft = 2 * 60; // 2 minutes
   const gameTimerInterval = setInterval(function () {
     if (!game.pause) {
       secondsLeft -= 1;

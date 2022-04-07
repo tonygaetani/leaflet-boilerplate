@@ -137,7 +137,7 @@ function endGame() {
   <div id="best-score" class="display-value h6">Best score: ${game.score.best}</div>
   <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
   <div id="avg-score" class="display-value h6">Average score: ${game.score.avg}</div>
-  <div class="results h6">guesses:</div>
+  <div class="results h6">Guesses:</div>
   ${game.guesses
     .map(
       (g) =>

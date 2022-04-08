@@ -60,3 +60,8 @@ body,
   color: #ffffff;
   margin-left: 5px;
 }
+
+#start-end-game-content {
+  height: 100%;
+  overflow: auto;
+}

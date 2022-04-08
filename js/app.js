@@ -129,24 +129,26 @@ function endGame() {
   // Do this on the next event loop tick
   setTimeout(() => {
     document.body.innerHTML = `
-<div id="start-end-game">
-  <marquee class="h3">G A M E O V E R</marquee>
-  <div id="results" class="display-value h6">Rounds: ${game.rounds}</div>
-  <div id="score" class="display-value h6">Total score: ${game.score.total}</div>
-  ${bonus}
-  <div id="best-score" class="display-value h6">Best score: ${game.score.best}</div>
-  <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
-  <div id="avg-score" class="display-value h6">Average score: ${game.score.avg}</div>
-  <div class="results h6">Guesses:</div>
-  ${game.guesses
-    .map(
-      (g) =>
-        `<div class="display-value h6">${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`
-    )
-    .join('')}
+<div id="start-end-game-content">
+  <div id="start-end-game">
+    <marquee class="h3">G A M E O V E R</marquee>
+    <div id="results" class="display-value h6">Rounds: ${game.rounds}</div>
+    <div id="score" class="display-value h6">Total score: ${game.score.total}</div>
+    ${bonus}
+    <div id="best-score" class="display-value h6">Best score: ${game.score.best}</div>
+    <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
+    <div id="avg-score" class="display-value h6">Average score: ${game.score.avg}</div>
+    <div class="results h6">Guesses:</div>
+    ${game.guesses
+      .map(
+        (g) =>
+          `<div class="display-value h6">${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`
+      )
+      .join('')}
+  </div>
+  <p />
+  <button class="btn btn-default btn-lg" onClick="window.location.reload();">start over</button>
 </div>
-<p />
-<button class="btn btn-default btn-lg" onClick="window.location.reload();">start over</button>
 `;
   }, 0);
 }

@@ -122,7 +122,7 @@ function endGame() {
   // Bonus points for lots of guesses in the time allowed
   let bonus = ``;
   if (game.guesses.length > 35) {
-    game.score += 25000;
+    game.score.total += 25000;
     bonus = '<div id="bonus" class="display-value h4 bonus">BONUS POINTS: 25000</div>';
   }
 

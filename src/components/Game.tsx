@@ -13,6 +13,7 @@ import { MapConsumer, MapContainer, TileLayer } from 'react-leaflet';
 
 type Props = {};
 type State = {
+  height: number;
   gameState: GameState;
 };
 export class Game extends React.Component<Props, State> {
@@ -24,6 +25,7 @@ export class Game extends React.Component<Props, State> {
     )!;
 
     this.state = {
+      height: window.innerHeight,
       gameState: {
         currentFlag: eesti,
         previousFlag: eesti,
@@ -107,7 +109,7 @@ export class Game extends React.Component<Props, State> {
           ? `You were ${this.state.gameState.lastDistance} km away from ${this.state.gameState.lastCapital.name}`
           : `Click the flag's capital city`;
       content = (
-        <div>
+        <div id="game">
           <img
             id="flag-img"
             className="img-responsive"
@@ -190,6 +192,7 @@ export class Game extends React.Component<Props, State> {
             center={[41, -69]} // center map to the waters off beautiful Nauset
             zoom={4}
             worldCopyJump={true}
+            style={{ height: this.state.height }}
           >
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"

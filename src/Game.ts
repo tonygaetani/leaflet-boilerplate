@@ -1,23 +1,42 @@
+import EmojiConvertor from "emoji-js";
+import L, { LatLng, LeafletMouseEvent, Marker, Polyline } from "leaflet";
+import { Capital, Flag, flags } from "./Flags";
+
 /////////////////////////////
 // sketchy globals go here //
 /////////////////////////////
-// initialize our map
-const map = L.map('map', {
-  center: [41, -69], // center map to the waters off beautiful Nauset
-  zoom: 4,
-  worldCopyJump: true,
-});
-// add a baselayer to the map
-const OpenStreetMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  subdomains: 'abcd',
-  maxZoom: 20,
-}).addTo(map);
+let map: L.Map;
+
 // game variables
-const game = {
-  currentFlag: undefined,
-  previousFlag: undefined,
+export type Guess = {
+	iso: string,
+	capital: Capital,
+	distance: number,
+	score: number,
+};
+export type GameState = {
+  currentFlag: Flag,
+  previousFlag: Flag,
+  currentLine: Polyline|undefined,
+  currentMarkers: Marker[],
+  guesses: Guess[],
+  rounds: number,
+  score: {
+    total: number,
+    last: number,
+    best: number,
+    worst: number,
+    avg: number,
+  },
+  flags: Flag[],
+  pause: boolean,
+  roundStartedAt: Date,
+};
+
+const eesti = flags.find((f) => f.capitals.some((c) => c.name.includes('Tallinn')))!;
+export const gameState: GameState = {
+  currentFlag: eesti,
+  previousFlag: eesti,
   currentLine: undefined,
   currentMarkers: [],
   guesses: [],
@@ -31,18 +50,49 @@ const game = {
   },
   flags,
   pause: false,
-  roundStartedAt: undefined,
+  roundStartedAt: new Date(),
 };
 
 ///////////////////////////////////
 // global functions for the game //
 ///////////////////////////////////
-function shuffle(array) {
+export function initializeGame() {
+	map = L.map('map', {
+		center: [41, -69], // center map to the waters off beautiful Nauset
+		zoom: 4,
+		worldCopyJump: true,
+	});
+	// add a baselayer to the map
+	L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+		attribution:
+			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+		subdomains: 'abcd',
+		maxZoom: 20,
+	}).addTo(map);
+	// register event listeners
+	map.on('click', updateGameState);
+	const nextButton = document.getElementById('next-button')!;
+	nextButton.addEventListener('click', function () {
+		(nextButton as any).disabled = true;
+		gameState.pause = false;
+		gameState.roundStartedAt = new Date();
+		for (const marker of gameState.currentMarkers) {
+			marker.remove();
+		}
+		gameState.currentMarkers = [];
+		if (gameState.currentLine) {
+			gameState.currentLine.remove();
+		}
+		attemptNextFlag();
+	});
+}
+
+function shuffle(array: unknown[]) {
   let currentIndex = array.length,
     randomIndex;
 
   // While there remain elements to shuffle...
-  while (currentIndex != 0) {
+  while (currentIndex !== 0) {
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
@@ -54,19 +104,19 @@ function shuffle(array) {
   return array;
 }
 
-function round(input) {
+function round(input: number) {
   // round to 2 decimal places
   return Math.round(input * 100) / 100;
 }
 
-function calculateScore(distance) {
+function calculateScore(distance: number) {
   let score = 0;
   if (distance > 1000) {
     return score;
   }
 
   // check if the guess was < 5 seconds
-  const guessDuration = new Date() - game.roundStartedAt;
+  const guessDuration = new Date().getTime() - gameState.roundStartedAt.getTime();
   if (guessDuration < 5 * 1000) {
     score += (5000 - guessDuration) * 2; // bonus points for fast guesses
   }
@@ -87,11 +137,11 @@ function calculateScore(distance) {
   }
 }
 
-function toRad(input) {
+function toRad(input: number) {
   return (input * Math.PI) / 180;
 }
 
-function haversine(lhs, rhs) {
+function haversine(lhs: Pick<LatLng, 'lat'|'lng'>, rhs: Pick<LatLng, 'lat'|'lng'>) {
   const R = 6371; // radius of earth in km
   const x1 = lhs.lat - rhs.lat;
   const dLat = toRad(x1);
@@ -107,22 +157,22 @@ function haversine(lhs, rhs) {
 }
 
 function popRandomFlag() {
-  shuffle(game.flags);
-  return game.flags.pop();
+  shuffle(gameState.flags);
+  return gameState.flags.pop();
 }
 
 const emoji = new EmojiConvertor();
 emoji.replace_mode = 'unified';
 emoji.allow_native = true;
-function getFlagEmoji(iso) {
+function getFlagEmoji(iso: string) {
   return emoji.replace_colons(`:flag-${iso.toLowerCase()}:`);
 }
 
 function endGame() {
   // Bonus points for lots of guesses in the time allowed
   let bonus = ``;
-  if (game.guesses.length > 35) {
-    game.score.total += 25000;
+  if (gameState.guesses.length > 35) {
+    gameState.score.total += 25000;
     bonus = '<div id="bonus" class="display-value h4 bonus">BONUS POINTS: 25000</div>';
   }
 
@@ -132,14 +182,14 @@ function endGame() {
 <div id="start-end-game-content">
   <div id="start-end-game">
     <marquee class="h3">G A M E O V E R</marquee>
-    <div id="results" class="display-value h6">Rounds: ${game.rounds}</div>
-    <div id="score" class="display-value h6">Total score: ${game.score.total}</div>
+    <div id="results" class="display-value h6">Rounds: ${gameState.rounds}</div>
+    <div id="score" class="display-value h6">Total score: ${gameState.score.total}</div>
     ${bonus}
-    <div id="best-score" class="display-value h6">Best score: ${game.score.best}</div>
-    <div id="worst-score" class="display-value h6">Worst score: ${game.score.worst}</div>
-    <div id="avg-score" class="display-value h6">Average score: ${game.score.avg}</div>
+    <div id="best-score" class="display-value h6">Best score: ${gameState.score.best}</div>
+    <div id="worst-score" class="display-value h6">Worst score: ${gameState.score.worst}</div>
+    <div id="avg-score" class="display-value h6">Average score: ${gameState.score.avg}</div>
     <div class="results h6">Guesses:</div>
-    ${game.guesses
+    ${gameState.guesses
       .map(
         (g) =>
           `<div class="display-value h6">${getFlagEmoji(g.iso)} ${g.capital.name}: ${g.score} (${g.distance} km)</div>`
@@ -155,47 +205,50 @@ function endGame() {
 
 function attemptNextFlag() {
   // move on to the next flag
-  game.currentFlag = popRandomFlag();
-  if (!game.currentFlag) {
+	const nextFlag = popRandomFlag();
+  if (!nextFlag) {
     endGame();
   } else {
-    game.previousFlag = game.currentFlag;
+  	gameState.currentFlag = nextFlag;
+    gameState.previousFlag = gameState.currentFlag;
     let elem = document.getElementById('flag-img');
     if (!elem) {
       elem = document.createElement('img');
     }
     elem.setAttribute('id', 'flag-img');
     elem.setAttribute('class', 'img-responsive');
-    elem.setAttribute('src', `https://flagcdn.com/256x192/${game.currentFlag.iso.toLowerCase()}.png`);
+    elem.setAttribute('src', `https://flagcdn.com/256x192/${gameState.currentFlag.iso.toLowerCase()}.png`);
     elem.setAttribute('width', '256');
     elem.setAttribute('height', '192');
     elem.setAttribute('alt', 'Flag to guess');
-    document.getElementById('flag').appendChild(elem);
+    document.getElementById('flag')!.appendChild(elem);
   }
 }
 
-function updateGameState(event) {
+function updateGameState(event?: LeafletMouseEvent) {
   // do not handle events when game is paused
-  if (!game.pause && event) {
+  if (!gameState.pause && event) {
     // pause the game until the "next" button is pressed
-    game.pause = true;
-    document.getElementById('next-button').disabled = false;
+    gameState.pause = true;
+    (document.getElementById('next-button') as any).disabled = false;
     let distance = Number.POSITIVE_INFINITY;
     let capital = undefined;
-    for (const capitalToCheck of game.previousFlag.capitals) {
+    for (const capitalToCheck of gameState.previousFlag?.capitals || []) {
       const distanceFromCapital = round(haversine(event.latlng, capitalToCheck.latlng));
       if (distanceFromCapital < distance) {
         distance = distanceFromCapital;
         capital = capitalToCheck;
       }
     }
-    game.currentLine = L.polyline([event.latlng, capital.latlng], {
+		// assume nothing is greater than everything
+		capital = capital!;
+    gameState.currentLine = L.polyline([event.latlng, capital.latlng], {
       color: '#007BA7', // cerulean
       weight: 0.5,
       opacity: 50,
     }).addTo(map);
     // guess marker
-    game.currentMarkers.push(
+    gameState.currentMarkers.push(
       L.marker([event.latlng.lat, event.latlng.lng], {
         icon: new L.DivIcon({
           className: 'previous-guess-icon',
@@ -204,7 +257,7 @@ function updateGameState(event) {
       }).addTo(map)
     );
     // answer marker
-    game.currentMarkers.push(
+    gameState.currentMarkers.push(
       L.marker([capital.latlng.lat, capital.latlng.lng], {
         icon: new L.DivIcon({
           className: 'previous-answer-icon',
@@ -212,38 +265,38 @@ function updateGameState(event) {
         }),
       }).addTo(map)
     );
-    game.score.last = calculateScore(distance);
-    game.score.total += game.score.last;
-    game.guesses.push({
-      iso: game.previousFlag.iso,
+    gameState.score.last = calculateScore(distance);
+    gameState.score.total += gameState.score.last;	
+    gameState.guesses.push({
+      iso: gameState.previousFlag.iso,
       capital,
       distance,
-      score: game.score.last,
+      score: gameState.score.last,
     });
-    game.rounds++;
-    document.getElementById('guess').innerText = `You were ${distance} km away from ${capital.name}`;
-    document.getElementById('total-score').innerText = `Score: ${game.score.total}`;
-    document.getElementById('last-score').innerText = `Last score: ${game.score.last}`;
-    if (game.score.last > game.score.best) {
-      game.score.best = game.score.last;
+    gameState.rounds++;
+    document.getElementById('guess')!.innerText = `You were ${distance} km away from ${capital.name}`;
+    document.getElementById('total-score')!.innerText = `Score: ${gameState.score.total}`;
+    document.getElementById('last-score')!.innerText = `Last score: ${gameState.score.last}`;
+    if (gameState.score.last > gameState.score.best) {
+      gameState.score.best = gameState.score.last;
     }
-    if (game.score.last < game.score.worst) {
-      game.score.worst = game.score.last;
+    if (gameState.score.last < gameState.score.worst) {
+      gameState.score.worst = gameState.score.last;
     }
-    game.score.avg = round(game.guesses.reduce((acc, guess) => acc + guess.score, 0) / game.guesses.length);
+    gameState.score.avg = round(gameState.guesses.reduce((acc, guess) => acc + guess.score, 0) / gameState.guesses.length);
   }
 }
 
 ////////////////////
 // setup the game //
 ////////////////////
-function startGame() {
+export function startGame() {
   // start the timer
   let secondsLeft = 2 * 60; // 2 minutes
   const gameTimerInterval = setInterval(function () {
-    if (!game.pause) {
+    if (!gameState.pause) {
       secondsLeft -= 1;
-      document.getElementById('game-timer').innerHTML = `Time left: ${secondsLeft} seconds`;
+      document.getElementById('game-timer')!.innerHTML = `Time left: ${secondsLeft} seconds`;
 
       if (secondsLeft <= 0) {
         clearInterval(gameTimerInterval);
@@ -255,27 +308,8 @@ function startGame() {
   // let's get started!
   attemptNextFlag();
   updateGameState();
-  const navbar = document.getElementById('navbar');
-  navbar.style.display = 'block';
-  const mapDiv = document.getElementById('map');
-  mapDiv.style.display = 'block';
+  document.getElementById('navbar')!.style.display = 'block';
+  document.getElementById('map')!.style.display = 'block';
   map.invalidateSize();
-  document.getElementById('start-end-game').style.display = 'none';
+  document.getElementById('start-end-game')!.style.display = 'none';
 }
-
-// register event listeners
-map.on('click', updateGameState);
-const nextButton = document.getElementById('next-button');
-nextButton.addEventListener('click', function () {
-  nextButton.disabled = true;
-  game.pause = false;
-  game.roundStartedAt = new Date();
-  for (const marker of game.currentMarkers) {
-    marker.remove(map);
-  }
-  game.currentMarkers = [];
-  if (game.currentLine) {
-    game.currentLine.remove(map);
-  }
-  attemptNextFlag();
-});

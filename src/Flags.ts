@@ -1,4 +1,16 @@
-const flags = [
+import { LatLng } from "leaflet";
+
+export type Capital = {
+	name: string,
+	latlng: Pick<LatLng, 'lat'|'lng'>,
+};
+
+export type Flag = {
+	capitals: Capital[],
+	iso: string,
+};
+
+export const flags: Flag[] = [
   {
     capitals: [
       {

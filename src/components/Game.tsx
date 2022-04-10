@@ -83,14 +83,12 @@ export class Game extends React.Component<Props, State> {
               Average score: {this.state.gameState.score.avg}
             </div>
             <div className="results h6">Guesses:</div>
-            {this.state.gameState.guesses
-              .map(
-                (g) =>
-                  `<div className="display-value h6">${getFlagEmoji(g.iso)} ${
-                    g.capital.name
-                  }: ${g.score} (${g.distance} km)</div>`
-              )
-              .join('')}
+            {this.state.gameState.guesses.map((g) => (
+              <div className="display-value h6">
+                {getFlagEmoji(g.iso)} {g.capital.name}: {g.score} ({g.distance}{' '}
+                km)
+              </div>
+            ))}
           </div>
           <p />
           <button
@@ -342,6 +340,12 @@ export class Game extends React.Component<Props, State> {
             rounds: this.state.gameState.rounds + 1,
             currentLine,
             currentMarkers,
+            guesses: this.state.gameState.guesses.concat({
+              capital,
+              distance,
+              iso: this.state.gameState.currentFlag.iso,
+              score,
+            }),
           },
         });
       }

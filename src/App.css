@@ -1,21 +1,21 @@
-html,
+/* html, */
 body,
-#container {
-  height: 100%;
-  width: 100%;
+#container,
+#map-container {
+  /* height: 100%; */
+  /* width: 100%; */
   overflow: hidden;
   background-color: #222;
 }
 
-/*this is important to give the map a height*/
 #map {
   width: auto;
-  height: 100%;
+  /* height: 100%; */
 }
 
 #navbar {
   margin: auto;
-  max-width: 375px;
+  color: #fff;
 }
 
 .display-value {

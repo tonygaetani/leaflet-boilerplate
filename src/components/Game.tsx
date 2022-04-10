@@ -109,37 +109,40 @@ export class Game extends React.Component<Props, State> {
           ? `You were ${this.state.gameState.lastDistance} km away from ${this.state.gameState.lastCapital.name}`
           : `Click the flag's capital city`;
       content = (
-        <div id="game">
-          <img
-            id="flag-img"
-            className="img-responsive"
-            src={`https://flagcdn.com/256x192/${
-              this.state.gameState?.currentFlag.iso.toLowerCase() ?? 'EE'
-            }.png`}
-            alt="Flag to guess"
-            width="256"
-            height="192"
-          ></img>
-          <div className="h6">{text}</div>
-          <div>
-            <div id={'total-score'} className={'display-value h6'}>
-              Total score: {this.state.gameState?.score.total ?? 0}
-            </div>
-            <div id={'last-score'} className={'display-value h6'}>
-              Last score: {this.state.gameState?.score.last ?? 0}
-            </div>
-            <div id={'game-timer'} className={'display-value h6'}>
-              Time left: {this.state.gameState?.secondsLeft ?? 120} seconds
-            </div>
+        <div>
+          <div className="col-xs-4">
+            <img
+              id="flag-img"
+              className="img-responsive"
+              src={`https://flagcdn.com/256x192/${
+                this.state.gameState?.currentFlag.iso.toLowerCase() ?? 'EE'
+              }.png`}
+              alt="Flag to guess"
+              width="256"
+              height="192"
+            ></img>
           </div>
-          <button
-            id={'game-btn'}
-            className={'btn btn-primary btn-lg'}
-            onClick={() => this.onNext()}
-            disabled={!this.state.gameState.pause}
-          >
-            Next
-          </button>
+          <div className="col-xs-8">
+            <div className="h6">{text}</div>
+            <div>
+              <div id="total-score" className="display-value h6">
+                Total score: {this.state.gameState?.score.total ?? 0}
+              </div>
+              <div id="last-score" className="display-value h6">
+                Last score: {this.state.gameState?.score.last ?? 0}
+              </div>
+              <div id="game-timer" className="display-value h6">
+                Time left: {this.state.gameState?.secondsLeft ?? 120} seconds
+              </div>
+            </div>
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={() => this.onNext()}
+              disabled={!this.state.gameState.pause}
+            >
+              Next
+            </button>
+          </div>
         </div>
       );
     } else {
@@ -222,6 +225,7 @@ export class Game extends React.Component<Props, State> {
     }
 
     this.setState({
+      height: window.innerHeight,
       gameState: {
         ...this.state.gameState,
         pause: false,
@@ -241,6 +245,7 @@ export class Game extends React.Component<Props, State> {
     }
 
     this.setState({
+      height: window.innerHeight,
       gameState: {
         ...this.state.gameState,
         over: true,
@@ -262,6 +267,7 @@ export class Game extends React.Component<Props, State> {
       this.endGame();
     } else {
       this.setState({
+        height: window.innerHeight,
         gameState: {
           ...this.state.gameState,
           currentFlag,
@@ -324,6 +330,7 @@ export class Game extends React.Component<Props, State> {
           );
         }
         this.setState({
+          height: window.innerHeight,
           gameState: {
             ...this.state.gameState,
             // pause the game until the "next" button is pressed
@@ -363,6 +370,7 @@ export class Game extends React.Component<Props, State> {
     const gameTimerInterval = setInterval(() => {
       if (!this.state.gameState.pause) {
         this.setState({
+          height: window.innerHeight,
           gameState: {
             ...this.state.gameState,
             secondsLeft: this.state.gameState.secondsLeft - 1,
@@ -379,6 +387,7 @@ export class Game extends React.Component<Props, State> {
     // let's get started!
     this.attemptNextFlag();
     this.setState({
+      height: window.innerHeight,
       gameState: {
         ...this.state.gameState,
         pause: false,

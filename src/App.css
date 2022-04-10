@@ -1,16 +1,12 @@
 html,
 body,
-#game,
 #container {
-  height: 100%;
-  width: 100%;
   overflow: hidden;
   background-color: #222;
 }
 
 #map {
   width: auto;
-  height: 100%;
 }
 
 #navbar {

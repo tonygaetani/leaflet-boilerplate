@@ -110,39 +110,35 @@ export class Game extends React.Component<Props, State> {
           : `Click the flag's capital city`;
       content = (
         <div>
-          <div className="col-xs-4">
-            <img
-              id="flag-img"
-              className="img-responsive"
-              src={`https://flagcdn.com/256x192/${
-                this.state.gameState?.currentFlag.iso.toLowerCase() ?? 'EE'
-              }.png`}
-              alt="Flag to guess"
-              width="256"
-              height="192"
-            ></img>
-          </div>
-          <div className="col-xs-8">
-            <div className="h6">{text}</div>
-            <div>
-              <div id="total-score" className="display-value h6">
-                Total score: {this.state.gameState?.score.total ?? 0}
-              </div>
-              <div id="last-score" className="display-value h6">
-                Last score: {this.state.gameState?.score.last ?? 0}
-              </div>
-              <div id="game-timer" className="display-value h6">
-                Time left: {this.state.gameState?.secondsLeft ?? 120} seconds
-              </div>
+          <img
+            id="flag-img"
+            className="img-responsive"
+            src={`https://flagcdn.com/256x192/${
+              this.state.gameState?.currentFlag.iso.toLowerCase() ?? 'EE'
+            }.png`}
+            alt="Flag to guess"
+            width="256"
+            height="192"
+          ></img>
+          <div className="h6">{text}</div>
+          <div>
+            <div id="total-score" className="display-value h6">
+              Total score: {this.state.gameState?.score.total ?? 0}
             </div>
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={() => this.onNext()}
-              disabled={!this.state.gameState.pause}
-            >
-              Next
-            </button>
+            <div id="last-score" className="display-value h6">
+              Last score: {this.state.gameState?.score.last ?? 0}
+            </div>
+            <div id="game-timer" className="display-value h6">
+              Time left: {this.state.gameState?.secondsLeft ?? 120} seconds
+            </div>
           </div>
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={() => this.onNext()}
+            disabled={!this.state.gameState.pause}
+          >
+            Next
+          </button>
         </div>
       );
     } else {

@@ -28,7 +28,6 @@ export class Game extends React.Component<Props, State> {
       height: window.innerHeight,
       gameState: {
         currentFlag: eesti,
-        previousFlag: eesti,
         lastCapital: eesti.capitals[0],
         lastDistance: Number.POSITIVE_INFINITY,
         currentLine: undefined,
@@ -222,7 +221,6 @@ export class Game extends React.Component<Props, State> {
 
     // move on to the next flag
     shuffle(flags);
-    const previousFlag = this.state.gameState.currentFlag;
     const currentFlag = flags.pop();
     if (!currentFlag) {
       this.endGame();
@@ -232,7 +230,6 @@ export class Game extends React.Component<Props, State> {
         gameState: {
           ...this.state.gameState,
           currentFlag,
-          previousFlag,
           pause: false,
           roundStartedAt: new Date(),
           currentMarkers: [],
@@ -268,8 +265,9 @@ export class Game extends React.Component<Props, State> {
       if (!this.state.gameState.pause) {
         let distance = Number.POSITIVE_INFINITY;
         let capital: Capital;
-        for (const capitalToCheck of this.state.gameState.previousFlag
-          ?.capitals || []) {
+        const capitalsToCheck =
+          this.state.gameState.currentFlag?.capitals || [];
+        for (const capitalToCheck of capitalsToCheck) {
           const distanceFromCapital = round(
             haversine(event.latlng, capitalToCheck.latlng)
           );

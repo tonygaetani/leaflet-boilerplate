@@ -20,7 +20,6 @@ export type Score = {
 
 export type GameState = {
   currentFlag: Flag;
-  previousFlag: Flag;
   lastCapital: Capital;
   lastDistance: number;
   currentLine: Polyline | undefined;

@@ -1,6 +1,6 @@
 import React from 'react';
 import L, { LeafletMouseEvent } from 'leaflet';
-import { Capital, Flag, flags } from '../Flags';
+import { Capital, flags } from '../Flags';
 import {
   calculateScore,
   GameState,

@@ -9,8 +9,7 @@ import {
   round,
   shuffle,
 } from '../Game';
-import { MapConsumer, MapContainer } from 'react-leaflet';
-import { GameTileLayer } from './GameTileLayer';
+import { MapConsumer, MapContainer, TileLayer } from 'react-leaflet';
 
 type Props = {};
 type State = {
@@ -63,26 +62,26 @@ export class Game extends React.Component<Props, State> {
       }
 
       content = (
-        <div id="start-end-game-content">
-          <div id="start-end-game">
+        <div id="end-game-content">
+          <div id="end-game">
             <p className="h3">G A M E O V E R</p>
             <div id="results" className="display-value h6">
-              Rounds: ${this.state.gameState.rounds}
+              Rounds: {this.state.gameState.rounds}
             </div>
             <div id="score" className="display-value h6">
-              Total score: ${this.state.gameState.score.total}
+              Total score: {this.state.gameState.score.total}
             </div>
             {bonus}
             <div id="best-score" className="display-value h6">
-              Best score: ${this.state.gameState.score.best}
+              Best score: {this.state.gameState.score.best}
             </div>
             <div id="worst-score" className="display-value h6">
-              Worst score: ${this.state.gameState.score.worst}
+              Worst score: {this.state.gameState.score.worst}
             </div>
             <div id="avg-score" className="display-value h6">
-              Average score: ${this.state.gameState.score.avg}
+              Average score: {this.state.gameState.score.avg}
             </div>
-            <div className="results h6">Guesses:</div>$
+            <div className="results h6">Guesses:</div>
             {this.state.gameState.guesses
               .map(
                 (g) =>
@@ -187,13 +186,17 @@ export class Game extends React.Component<Props, State> {
         </div>
         <div>
           <MapContainer
-            id="map-container"
             className="map"
             center={[41, -69]} // center map to the waters off beautiful Nauset
             zoom={4}
             worldCopyJump={true}
           >
-            <GameTileLayer />
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              subdomains="abcd"
+              maxZoom={20}
+            />
             <MapConsumer>
               {(map) => {
                 map.on('click', this.updateGameState(map));

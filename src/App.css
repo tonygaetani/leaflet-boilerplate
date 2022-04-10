@@ -1,16 +1,15 @@
-/* html, */
+html,
 body,
-#container,
-#map-container {
-  /* height: 100%; */
-  /* width: 100%; */
+#container {
+  height: 100%;
+  width: 100%;
   overflow: hidden;
   background-color: #222;
 }
 
 #map {
   width: auto;
-  /* height: 100%; */
+  height: 100%;
 }
 
 #navbar {
@@ -55,13 +54,13 @@ body,
   font-weight: bolder;
 }
 
-#start-end-game {
+#end-game {
   width: 350px;
   color: #ffffff;
   margin-left: 5px;
 }
 
-#start-end-game-content {
+#end-game-content {
   height: 100%;
   overflow: auto;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import L, { LeafletMouseEvent } from 'leaflet';
-import { Capital, flags } from '../Flags';
+import { Capital, Flag, flags } from '../Flags';
 import {
   calculateScore,
   GameState,
@@ -46,7 +46,7 @@ export class Game extends React.Component<Props, State> {
         flags,
         pause: true,
         over: false,
-        secondsLeft: 10, // 2 minutes
+        secondsLeft: 2 * 60, // 2 minutes
         roundStartedAt: undefined,
       },
     };
@@ -220,17 +220,25 @@ export class Game extends React.Component<Props, State> {
       this.state.gameState.currentLine.remove();
     }
 
-    this.setState({
-      height: window.innerHeight,
-      gameState: {
-        ...this.state.gameState,
-        pause: false,
-        roundStartedAt: new Date(),
-        currentMarkers: [],
-      },
-    });
-
-    this.attemptNextFlag();
+    // move on to the next flag
+    shuffle(flags);
+    const previousFlag = this.state.gameState.currentFlag;
+    const currentFlag = flags.pop();
+    if (!currentFlag) {
+      this.endGame();
+    } else {
+      this.setState({
+        height: window.innerHeight,
+        gameState: {
+          ...this.state.gameState,
+          currentFlag,
+          previousFlag,
+          pause: false,
+          roundStartedAt: new Date(),
+          currentMarkers: [],
+        },
+      });
+    }
   }
 
   private endGame() {
@@ -252,25 +260,6 @@ export class Game extends React.Component<Props, State> {
         },
       },
     });
-  }
-
-  private attemptNextFlag() {
-    // move on to the next flag
-    shuffle(flags);
-    const previousFlag = this.state.gameState.currentFlag;
-    const currentFlag = flags.pop();
-    if (!currentFlag) {
-      this.endGame();
-    } else {
-      this.setState({
-        height: window.innerHeight,
-        gameState: {
-          ...this.state.gameState,
-          currentFlag,
-          previousFlag,
-        },
-      });
-    }
   }
 
   private updateGameState(map: L.Map) {
@@ -381,13 +370,14 @@ export class Game extends React.Component<Props, State> {
     }, 1000);
 
     // let's get started!
-    this.attemptNextFlag();
+    shuffle(flags);
     this.setState({
       height: window.innerHeight,
       gameState: {
         ...this.state.gameState,
         pause: false,
         roundStartedAt: new Date(),
+        currentFlag: flags.pop()!,
       },
     });
     return undefined;

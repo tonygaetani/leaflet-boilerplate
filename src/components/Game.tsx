@@ -269,7 +269,7 @@ export class Game extends React.Component<Props, State> {
           const distanceFromCapital = round(
             haversine(event.latlng, capitalToCheck.latlng)
           );
-          if (distanceFromCapital < this.state.gameState.lastDistance) {
+          if (distanceFromCapital < distance) {
             distance = distanceFromCapital;
             capital = capitalToCheck;
           }
